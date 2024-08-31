@@ -43,6 +43,12 @@ type Users []User
 - `--output`: (required) Output file path.
 - `--exclude`: Field name to exclude for generating slice accessor.
 
+Run the following help command if you would like to know more details.
+
+```zsh
+$ go run github.com/snamiki1212/gen-slice-accessor@latest --help
+```
+
 ## LICENSE
 
 [MIT](./LICENSE)
