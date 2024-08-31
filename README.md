@@ -37,18 +37,23 @@ type Users []User
 +}
 ```
 
-## Flags
+## Help
 
-- `--entity`: (required) Struct name.
-- `--slice`: (required) Slice name.
-- `--input`: (required) Input file path.
-- `--output`: (required) Output file path.
-- `--exclude`: Excluded field name to generate slice accessor.
-
-Run the following help command if you would like to know more details.
-
-```zsh
+```shell
 $ go run github.com/snamiki1212/gen-slice-accessor@latest --help
+
+Generate accessors for each field in the slice struct.
+
+Usage:
+  gen-slice-accessor [flags]
+
+Flags:
+  -e, --entity string     target entity name
+  -x, --exclude strings   field names to exclude
+  -h, --help              help for gen-slice-accessor
+  -i, --input string      input file name
+  -o, --output string     output file name
+  -s, --slice string      target slice name
 ```
 
 ## LICENSE
