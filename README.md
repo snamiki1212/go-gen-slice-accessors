@@ -1,5 +1,7 @@
 # gen-slice-accessor
 
+Generate accessors for each field in the slice struct.
+
 ## Usage
 
 ### 1. Add go:generate directive.
