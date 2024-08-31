@@ -28,39 +28,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "gen-slice-accessor",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("run")
-		fmt.Println("args", entity, slice, fieldNamesToExclude, input, output)
-
-		fmt.Println(args)
-	},
-	// Args: func(cmd *cobra.Command, args []string) error {
-
-	// },
-}
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
-}
-
-var (
+type arguments struct {
 	// Target entity name
 	entity string
 
@@ -75,25 +43,72 @@ var (
 
 	// Output file name
 	output string
-)
+}
+
+var args = arguments{}
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "gen-slice-accessor",
+	Short: "A brief description of your application",
+	Long: `A longer description that spans multiple lines and likely contains
+examples and usage of using your application. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	// Uncomment the following line if your bare application
+	// has an action associated with it:
+	Run: func(cmd *cobra.Command, _ []string) {
+		fmt.Println("run")
+		fmt.Println("args", args.entity, args.slice, args.fieldNamesToExclude, args.input, args.output)
+
+		// Parse source code
+		data, err := parse(args, reader)
+		if err != nil {
+			panic(err)
+		}
+
+		// Generate code
+		txt, err := generate(data)
+		if err != nil {
+			panic(err)
+		}
+
+		// Write to output file
+		err = write(args.output, txt)
+		if err != nil {
+			panic(err)
+		}
+	},
+}
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() {
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
+}
 
 func init() {
 	// entity
+	rootCmd.Flags().StringVarP(&args.entity, "entity", "e", "", "target entity name")
 	_ = rootCmd.MarkFlagRequired("entity")
-	rootCmd.Flags().StringVarP(&entity, "entity", "e", "", "target entity name")
 
 	// slice
+	rootCmd.Flags().StringVarP(&args.slice, "slice", "s", "", "target slice name")
 	_ = rootCmd.MarkFlagRequired("slice")
-	rootCmd.Flags().StringVarP(&slice, "slice", "s", "", "target slice name")
 
 	// input
+	rootCmd.Flags().StringVarP(&args.input, "input", "i", "", "input file name")
 	_ = rootCmd.MarkFlagRequired("input")
-	rootCmd.Flags().StringVarP(&input, "input", "i", "", "input file name")
 
 	// output
+	rootCmd.Flags().StringVarP(&args.output, "output", "o", "", "output file name")
 	_ = rootCmd.MarkFlagRequired("output")
-	rootCmd.Flags().StringVarP(&output, "output", "o", "", "output file name")
 
 	// fieldNamesToExclude
-	rootCmd.Flags().StringSliceVarP(&fieldNamesToExclude, "exclude", "x", []string{}, "field names to exclude")
+	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "field names to exclude")
 }
