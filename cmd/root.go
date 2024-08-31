@@ -22,6 +22,8 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -56,30 +58,33 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, _ []string) {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Parse source code
 		data, err := parse(args, reader)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("parse error: %w", err)
 		}
 
 		// Generate code
 		txt, err := generate(data)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("generate error: %w", err)
 		}
 
 		// Write to output file
 		err = write(args.output, txt)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("write error: %w", err)
 		}
+
+		return nil
 	},
 }
 
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
+		log.Println(err)
 		os.Exit(1)
 	}
 }
