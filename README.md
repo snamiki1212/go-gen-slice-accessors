@@ -41,7 +41,7 @@ type Users []User
 - `--slice`: (required) Slice name.
 - `--input`: (required) Input file path.
 - `--output`: (required) Output file path.
-- `--exclude`: Field name to exclude for generating slice accessor.
+- `--exclude`: Excluded field name to generate slice accessor.
 
 Run the following help command if you would like to know more details.
 
