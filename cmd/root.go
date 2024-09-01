@@ -74,14 +74,22 @@ func (a *arguments) loadAccessors(as []string) error {
 	return nil
 }
 
+func loader() error {
+	// Load arguments
+	if err := args.loadAccessors(accessors); err != nil {
+		return fmt.Errorf("load accessor error: %w", err)
+	}
+	return nil
+}
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gen-slice-accessors",
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Load arguments
-		if err := args.loadAccessors(accessors); err != nil {
-			return fmt.Errorf("load accessor error: %w", err)
+		if err := loader(); err != nil {
+			return fmt.Errorf("loader error: %w", err)
 		}
 
 		// Parse source code
