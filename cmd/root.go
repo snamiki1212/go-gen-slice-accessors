@@ -60,7 +60,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Transform data
-		data = *transform(&data)
+		data = *transform(&data, newPluralizer())
 
 		// Generate code
 		txt, err := generate(data)

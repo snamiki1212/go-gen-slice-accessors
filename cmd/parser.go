@@ -6,7 +6,6 @@ import (
 	"go/parser"
 	"go/token"
 	"log"
-	"slices"
 	"strings"
 )
 
@@ -174,27 +173,6 @@ func newField(raw *ast.Field) field {
 		Name: name,
 		Type: ty,
 	}
-}
-
-// Build accessor name.
-func (f *field) buildAccessor() *field {
-	f.Accessor = fmt.Sprintf("%s%s", f.Name, "s")
-	return f
-}
-
-// Build accessor names.
-func (fs fields) buildAccessor() fields {
-	for i := range fs {
-		fs[i].buildAccessor()
-	}
-	return fs
-}
-
-// Exclude fields by name.
-func (fs fields) exclude(targets []string) fields {
-	return slices.DeleteFunc(fs, func(f field) bool {
-		return slices.Contains(targets, f.Name)
-	})
 }
 
 // Display fields.
