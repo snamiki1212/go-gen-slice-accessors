@@ -33,9 +33,10 @@ func (s strRule) toPluralizeRule() pluralizeRule {
 }
 
 func (p pluralizer) replace(word string, rules []pluralizeRule) string {
-	for _, r := range rules {
-		if r.expression.MatchString(word) {
-			return p.doReplace(word, r)
+	// reverse order
+	for i := len(rules) - 1; i >= 0; i-- {
+		if rules[i].expression.MatchString(word) {
+			return p.doReplace(word, rules[i])
 		}
 	}
 	return word
@@ -46,9 +47,14 @@ func (p pluralizer) doReplace(word string, rule pluralizeRule) string {
 }
 
 // NOTE: (?i) is case insentive flag(https://stackoverflow.com/questions/15326421/how-do-i-do-a-case-insensitive-regular-expression-in-go)
+// NOTE: https://github.com/gertd/go-pluralize/blob/master/pluralize.go#L317
 func newDefaultStrRules() strRules {
 	return strRules{
 		{`(?i).*`, `${0}s`},
+		{`(?i)(?:fe|f)$`, `${1}ves`},
+		{`(?i)([^aiueo])y$`, `${1}ies`},
+		{`(?i)([^aiueo])o$`, `${1}oes`},
+		{`(?i)([s|z|sh|ch|x])$`, `${1}es`},
 	}
 }
 
