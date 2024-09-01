@@ -50,7 +50,7 @@ var args = arguments{}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gen-slice-accessor",
+	Use:   "gen-slice-accessors",
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Parse source code
