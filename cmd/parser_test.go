@@ -40,6 +40,48 @@ type User struct {
 				},
 			},
 		},
+		"ok: exlucde": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age"}},
+				src: `
+package user
+
+type User struct {
+	UserID string
+	Age    int64
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
+				},
+			},
+		},
+		"ok: custom accessor naming": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, accessors: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
+				src: `
+package user
+
+type User struct {
+	UserID string
+	Age    int64
+	Age2   int64
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
+					{Accessor: "AgeList", Name: "Age", Type: "int64"},
+				},
+			},
+		},
 		"ok: plural": {
 			args: args{
 				arguments: arguments{entity: "User", slice: "Users"},

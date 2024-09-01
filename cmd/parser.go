@@ -30,7 +30,7 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 	// Transform data
 	fs = fs.
 		exclude(args.fieldNamesToExclude).
-		buildAccessor(newPluralizer())
+		buildAccessor(newPluralizer(), args.accessors)
 
 	return data{
 		fields:    fs,
@@ -202,15 +202,20 @@ func (f field) display() string {
 }
 
 // Build accessor name.
-func (f *field) buildAccessor(p pluralizer) *field {
+func (f *field) buildAccessor(p pluralizer, rule map[string]string) *field {
+	if acc, ok := rule[f.Name]; ok {
+		f.Accessor = acc
+		return f
+	}
+
 	f.Accessor = p.pluralize(f.Name)
 	return f
 }
 
 // Build accessor names.
-func (fs fields) buildAccessor(p pluralizer) fields {
+func (fs fields) buildAccessor(p pluralizer, rule map[string]string) fields {
 	for i := range fs {
-		fs[i].buildAccessor(p)
+		fs[i].buildAccessor(p, rule)
 	}
 	return fs
 }
