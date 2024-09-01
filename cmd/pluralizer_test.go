@@ -12,11 +12,10 @@ func Test_pluralizer_pluralize(t *testing.T) {
 		arg  string
 		want string
 	}{
-		"ok: common case": {
-			recv: pluralizer{},
-			arg:  "User",
-			want: "Users",
-		},
+		"ok: 1": {recv: newPluralizer(), arg: "User", want: "Users"},
+		"ok: 2": {recv: newPluralizer(), arg: "UserID", want: "UserIDs"},
+		"ok: 3": {recv: newPluralizer(), arg: "column1", want: "column1s"},
+		// "ok: ": {recv: newPluralizer(), arg: "History", want: "Histories"},
 	}
 	for tn, tt := range tests {
 		t.Run(tn, func(t *testing.T) {
