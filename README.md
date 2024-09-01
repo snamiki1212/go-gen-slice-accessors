@@ -42,15 +42,16 @@ $ go run github.com/snamiki1212/go-gen-slice-accessors@latest --help
 Generate accessors for each field in the slice struct.
 
 Usage:
-  go-gen-slice-accessors [flags]
+  gen-slice-accessors [flags]
 
 Flags:
-  -e, --entity string     target entity name
-  -x, --exclude strings   field names to exclude
-  -h, --help              help for go-gen-slice-accessors
-  -i, --input string      input file name
-  -o, --output string     output file name
-  -s, --slice string      target slice name
+  -a, --accessor strings   accessor name for field / e.g. --accessor=Name:GetName
+  -e, --entity string      target entity name
+  -x, --exclude strings    field names to exclude
+  -h, --help               help for gen-slice-accessors
+  -i, --input string       input file name
+  -o, --output string      output file name
+  -s, --slice string       target slice name
 ```
 
 ## Examples
