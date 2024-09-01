@@ -1,4 +1,4 @@
-module github.com/snamiki1212/gen-slice-accessors
+module github.com/snamiki1212/go-gen-slice-accessors
 
 go 1.23
 

@@ -1,4 +1,4 @@
-# gen-slice-accessors
+# go-gen-slice-accessors
 
 Generate accessors for each field in the slice struct.
 
@@ -11,7 +11,7 @@ package main
 
 import "time"
 
-+//go:generate go run github.com/snamiki1212/gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --exclude CreatedAt
++//go:generate go run github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --exclude CreatedAt
 type User struct {
   UserID    string
   CreatedAt time.Time
@@ -40,17 +40,17 @@ type Users []User
 ## Help
 
 ```shell
-$ go run github.com/snamiki1212/gen-slice-accessors@latest --help
+$ go run github.com/snamiki1212/go-gen-slice-accessors@latest --help
 
 Generate accessors for each field in the slice struct.
 
 Usage:
-  gen-slice-accessors [flags]
+  go-gen-slice-accessors [flags]
 
 Flags:
   -e, --entity string     target entity name
   -x, --exclude strings   field names to exclude
-  -h, --help              help for gen-slice-accessors
+  -h, --help              help for go-gen-slice-accessors
   -i, --input string      input file name
   -o, --output string     output file name
   -s, --slice string      target slice name

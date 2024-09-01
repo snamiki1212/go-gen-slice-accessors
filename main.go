@@ -21,7 +21,7 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/snamiki1212/gen-slice-accessors/cmd"
+import "github.com/snamiki1212/go-gen-slice-accessors/cmd"
 
 func main() {
 	cmd.Execute()
