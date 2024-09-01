@@ -34,7 +34,33 @@ type User struct {
 			want: data{
 				pkgName:   "user",
 				sliceName: "Users",
-				fields:    fields{{Name: "UserID", Type: "string"}, {Name: "Age", Type: "int64"}},
+				fields: fields{
+					{Name: "UserID", Type: "string", Accessor: "UserIDs"},
+					{Name: "Age", Type: "int64", Accessor: "Ages"},
+				},
+			},
+		},
+		"ok: plural": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users"},
+				src: `
+package user
+
+type User struct {
+	UserID string
+	History bool
+	Box bool
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Name: "UserID", Type: "string", Accessor: "UserIDs"},
+					{Name: "History", Type: "bool", Accessor: "Historys"}, // TODO: Histories
+					{Name: "Box", Type: "bool", Accessor: "Boxs"},         // TODO: Boxes
+				},
 			},
 		},
 		"ok: callback": {
@@ -57,12 +83,12 @@ type User struct {
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
-					{Name: "callback0", Type: "func() ()"},
-					{Name: "callback1", Type: "func(x string, x2 bool) (y int64, y2 int32)"},
-					{Name: "callback2", Type: "func(string, bool) (int64, int32)"},
-					{Name: "callback3", Type: "func(u1 User) (u2 *User)"},
-					{Name: "callback4", Type: "func(cb1 func(x1 string) (y1 int)) (cb2 func(x2 string) (y2 int))"},
-					{Name: "callback5", Type: "func(head string, tail ...bool) (num int64)"},
+					{Name: "callback0", Type: "func() ()", Accessor: "callback0s"},
+					{Name: "callback1", Type: "func(x string, x2 bool) (y int64, y2 int32)", Accessor: "callback1s"},
+					{Name: "callback2", Type: "func(string, bool) (int64, int32)", Accessor: "callback2s"},
+					{Name: "callback3", Type: "func(u1 User) (u2 *User)", Accessor: "callback3s"},
+					{Name: "callback4", Type: "func(cb1 func(x1 string) (y1 int)) (cb2 func(x2 string) (y2 int))", Accessor: "callback4s"},
+					{Name: "callback5", Type: "func(head string, tail ...bool) (num int64)", Accessor: "callback5s"},
 				},
 			},
 		},
@@ -81,7 +107,7 @@ type User struct {
 			want: data{
 				pkgName:   "user",
 				sliceName: "Users",
-				fields:    fields{{Name: "UserID", Type: "string"}},
+				fields:    fields{{Name: "UserID", Type: "string", Accessor: "UserIDs"}},
 			},
 		},
 		"ng: invalid src code: syntax error": {

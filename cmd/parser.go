@@ -25,7 +25,9 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 	}
 
 	// Convert ast to own struct
-	fs := newFields(fields).exclude(args.fieldNamesToExclude)
+	fs := newFields(fields).
+		exclude(args.fieldNamesToExclude).
+		buildAccessor()
 
 	return data{
 		fields:    fs,
@@ -78,20 +80,11 @@ type (
 
 	// Struct field from entity in source code.
 	field struct {
-		Name string // field name
-		Type string // field type like string,int64...
+		Name     string // field name
+		Type     string // field type like string,int64...
+		Accessor string // accessor name
 	}
 )
-
-// Constructor for field.
-func newField(raw *ast.Field) field {
-	name := safeGetNameFromField(raw)
-	ty := parseExpr(raw.Type)
-	return field{
-		Name: name,
-		Type: ty,
-	}
-}
 
 // Parse expression.
 func parseExpr(x ast.Expr) string {
@@ -163,6 +156,42 @@ func newFields(raws []*ast.Field) fields {
 	return fs
 }
 
+// Get field name safely.
+func safeGetNameFromField(raw *ast.Field) string {
+	if len(raw.Names) == 0 {
+		return ""
+	}
+	return raw.Names[0].Name
+}
+
+// ----------------
+// Field
+// ----------------
+
+// Constructor for field.
+func newField(raw *ast.Field) field {
+	name := safeGetNameFromField(raw)
+	ty := parseExpr(raw.Type)
+	return field{
+		Name: name,
+		Type: ty,
+	}
+}
+
+// Build accessor name.
+func (f *field) buildAccessor() *field {
+	f.Accessor = fmt.Sprintf("%s%s", f.Name, "s")
+	return f
+}
+
+// Build accessor names.
+func (fs fields) buildAccessor() fields {
+	for i := range fs {
+		fs[i].buildAccessor()
+	}
+	return fs
+}
+
 // Exclude fields by name.
 func (fs fields) exclude(targets []string) fields {
 	return slices.DeleteFunc(fs, func(f field) bool {
@@ -188,16 +217,4 @@ func (f field) display() string {
 		return f.Type
 	}
 	return fmt.Sprintf("%s %s", f.Name, f.Type)
-}
-
-// Constructor for method name.
-// TODO: use pluralize package: https://github.com/gertd/go-pluralize
-func newMethodName(name string) string { return name + "s" }
-
-// Get field name safely.
-func safeGetNameFromField(raw *ast.Field) string {
-	if len(raw.Names) == 0 {
-		return ""
-	}
-	return raw.Names[0].Name
 }
