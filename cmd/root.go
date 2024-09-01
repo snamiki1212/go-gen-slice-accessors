@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -36,23 +37,53 @@ type arguments struct {
 	// Target slice name
 	slice string
 
-	// Field names to exclude
-	fieldNamesToExclude []string
-
 	// Input file name
 	input string
 
 	// Output file name
 	output string
+
+	// Field names to exclude
+	fieldNamesToExclude []string
+
+	// Mapping field name to accessor name
+	accessors map[string]string // key: field name, value: acccessor name.
 }
 
-var args = arguments{}
+var accessors []string
+
+// arguments
+var args = arguments{
+	accessors: map[string]string{},
+}
+
+func (a *arguments) loadAccessors(as []string) error {
+	container := make([]error, 0)
+	for _, ac := range as {
+		pair := strings.Split(ac, ":")
+		if len(pair) != 2 {
+			container = append(container, fmt.Errorf("invalid accessor: %s", ac))
+			continue
+		}
+		field, accessor := pair[0], pair[1]
+		args.accessors[field] = accessor
+	}
+	if len(container) != 0 {
+		return fmt.Errorf("%v", container)
+	}
+	return nil
+}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gen-slice-accessors",
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
+		// Load arguments
+		if err := args.loadAccessors(accessors); err != nil {
+			return fmt.Errorf("load accessor error: %w", err)
+		}
+
 		// Parse source code
 		data, err := parse(args, reader)
 		if err != nil {
@@ -102,4 +133,7 @@ func init() {
 
 	// fieldNamesToExclude
 	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "field names to exclude")
+
+	// accessor
+	rootCmd.Flags().StringSliceVarP(&accessors, "accessor", "a", []string{}, "accessor name for field / e.g. --accessor=Name:GetName")
 }
