@@ -25,9 +25,7 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 	}
 
 	// Convert ast to own struct
-	fs := newFields(fields).
-		exclude(args.fieldNamesToExclude).
-		buildAccessor()
+	fs := newFields(fields)
 
 	return data{
 		fields:    fs,
