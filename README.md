@@ -61,7 +61,7 @@ Flags:
 ```diff filename="user.go"
 package main
 
-+//go:generate go run . --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt
++//go:generate go run github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt
 type User struct {
 	UserID    string
 	CreatedAt int64
