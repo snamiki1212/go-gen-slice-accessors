@@ -59,9 +59,6 @@ var rootCmd = &cobra.Command{
 			return fmt.Errorf("parse error: %w", err)
 		}
 
-		// Transform data
-		data = *transform(&data, newPluralizer())
-
 		// Generate code
 		txt, err := generate(data)
 		if err != nil {

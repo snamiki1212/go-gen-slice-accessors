@@ -21,14 +21,8 @@ func Test_generate(t *testing.T) {
 			args: args{
 				data: data{
 					fields: fields{
-						{
-							Name: "Name",
-							Type: "string",
-						},
-						{
-							Name: "Age",
-							Type: "int64",
-						},
+						{Accessor: "Names", Name: "Name", Type: "string"},
+						{Accessor: "Ages", Name: "Age", Type: "int64"},
 					},
 					pkgName:   "user",
 					sliceName: "Users",
