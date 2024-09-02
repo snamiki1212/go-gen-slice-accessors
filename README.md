@@ -9,7 +9,7 @@ Generate accessors for each field in the slice struct.
 ```diff filename="user.go"
 package main
 
-+//go:generate go run github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go
++//go:generate go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go
 type User struct {
   UserID    string
 }
@@ -37,7 +37,7 @@ type Users []User
 ## Help
 
 ```shell
-$ go run github.com/snamiki1212/go-gen-slice-accessors@latest --help
+$ go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors@latest --help
 
 Generate accessors for each field in the slice struct.
 
@@ -61,7 +61,7 @@ Flags:
 ```diff filename="user.go"
 package main
 
-+//go:generate go run github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt
++//go:generate go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt
 type User struct {
 	UserID    string
 	CreatedAt int64
@@ -91,7 +91,7 @@ type Users []User
 ```diff filename="user.go"
 package main
 
-+//go:generate go run github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --accessor=UserID:GetUserIDs --accessor=Age:AgeList
++//go:generate go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go --accessor=UserID:GetUserIDs --accessor=Age:AgeList
 type User struct {
   UserID    string
   Age       int64
