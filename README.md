@@ -124,6 +124,13 @@ type Users []User
 +}
 ```
 
+## E2E
+
+```zsh
+$ go generate ./example
+$ go run ./example
+```
+
 ## LICENSE
 
 [MIT](./LICENSE)
