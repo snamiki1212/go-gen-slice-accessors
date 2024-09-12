@@ -29,7 +29,8 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 
 	// Transform data
 	fs = fs.
-		exclude(args.fieldNamesToExclude).
+		exclude().
+		excludeByFieldName(args.fieldNamesToExclude).
 		buildAccessor(newPluralizer(), args.accessors)
 
 	return data{
@@ -113,10 +114,10 @@ func parseExpr(x ast.Expr) string {
 // Parse chan type.
 func parseChanType(x *ast.ChanType) string {
 	switch x.Dir {
-	// case ast.SEND:
-	// 	return "chan<- " + parseExpr(x.Value)
-	// case ast.RECV:
-	// 	return "<-chan " + parseExpr(x.Value)
+	case ast.SEND:
+		return "chan<- " + parseExpr(x.Value)
+	case ast.RECV:
+		return "<-chan " + parseExpr(x.Value)
 	default:
 		return "chan " + parseExpr(x.Value)
 	}
@@ -247,8 +248,20 @@ func (fs fields) buildAccessor(p pluralizer, rule map[string]string) fields {
 }
 
 // Exclude fields by name.
-func (fs fields) exclude(targets []string) fields {
+func (fs fields) excludeByFieldName(targets []string) fields {
 	return slices.DeleteFunc(fs, func(f field) bool {
 		return slices.Contains(targets, f.Name)
+	})
+}
+
+// Exclude
+func (fs fields) exclude() fields {
+	prefixes := []string{
+		"chan<-",
+	}
+	return slices.DeleteFunc(fs, func(f field) bool {
+		return slices.ContainsFunc(prefixes, func(prefix string) bool {
+			return strings.HasPrefix(f.Type, prefix)
+		})
 	})
 }

@@ -170,6 +170,8 @@ type User struct {
 	chan1 chan func()
 	chanA *chan string
 	chanB *chan func()
+	chanS0 chan<- string
+	chanR0 <-chan string
 }
 `,
 			},
@@ -181,6 +183,8 @@ type User struct {
 					{Accessor: "chan1s", Name: "chan1", Type: "chan func() ()"},
 					{Accessor: "chanAs", Name: "chanA", Type: "*chan string"},
 					{Accessor: "chanBs", Name: "chanB", Type: "*chan func() ()"},
+					// {Accessor: "chanS0s", Name: "chanS0", Type: "chan<- string"}, // exclude me
+					{Accessor: "chanR0s", Name: "chanR0", Type: "<-chan string"},
 				},
 			},
 		},
@@ -225,9 +229,6 @@ type User struct {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			if name != "ok: chan" {
-				t.Skip()
-			}
 			reader := newReaderFromString(tt.args.src)
 			got, err := parse(tt.args.arguments, reader)
 			if tt.wantErr {
