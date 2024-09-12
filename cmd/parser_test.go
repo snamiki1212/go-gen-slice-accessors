@@ -159,6 +159,31 @@ type User struct {
 				},
 			},
 		},
+		"ok: chan": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users"},
+				src: `
+package user
+
+type User struct {
+	chan0 chan string
+	chan1 chan func()
+	chanA *chan string
+	chanB *chan func()
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Accessor: "chan0s", Name: "chan0", Type: "chan string"},
+					{Accessor: "chan1s", Name: "chan1", Type: "chan func() ()"},
+					{Accessor: "chanAs", Name: "chanA", Type: "*chan string"},
+					{Accessor: "chanBs", Name: "chanB", Type: "*chan func() ()"},
+				},
+			},
+		},
 		"ng: invalid src code: syntax error": {
 			args: args{
 				arguments: arguments{entity: "User", slice: "Users"},
@@ -200,7 +225,7 @@ type User struct {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			if name != "ok: map" {
+			if name != "ok: chan" {
 				t.Skip()
 			}
 			reader := newReaderFromString(tt.args.src)

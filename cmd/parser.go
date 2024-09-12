@@ -102,9 +102,24 @@ func parseExpr(x ast.Expr) string {
 		return parseEllipsis(tt)
 	case *ast.MapType:
 		return parseMapType(tt)
+	// chan
+	case *ast.ChanType:
+		return parseChanType(tt)
 	}
 	log.Println("parse error: unknown type")
 	return "any"
+}
+
+// Parse chan type.
+func parseChanType(x *ast.ChanType) string {
+	switch x.Dir {
+	// case ast.SEND:
+	// 	return "chan<- " + parseExpr(x.Value)
+	// case ast.RECV:
+	// 	return "<-chan " + parseExpr(x.Value)
+	default:
+		return "chan " + parseExpr(x.Value)
+	}
 }
 
 // Parse map type.
@@ -124,6 +139,8 @@ func parseStarExpr(x *ast.StarExpr) string {
 		return "*" + tt.Name
 	case *ast.MapType:
 		return "*" + parseMapType(tt)
+	case *ast.ChanType:
+		return "*" + parseChanType(tt)
 	default:
 		log.Println("parseStarExpr: parse error: unknown type")
 		return "any"
