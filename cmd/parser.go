@@ -100,9 +100,16 @@ func parseExpr(x ast.Expr) string {
 		return parseFuncType(tt)
 	case *ast.Ellipsis:
 		return parseEllipsis(tt)
+	case *ast.MapType:
+		return parseMapType(tt)
 	}
 	log.Println("parse error: unknown type")
 	return "any"
+}
+
+// Parse map type.
+func parseMapType(x *ast.MapType) string {
+	return fmt.Sprintf("map[%s]%s", parseExpr(x.Key), parseExpr(x.Value))
 }
 
 // Parse identifier.
@@ -115,6 +122,8 @@ func parseStarExpr(x *ast.StarExpr) string {
 	switch tt := x.X.(type) {
 	case *ast.Ident:
 		return "*" + tt.Name
+	case *ast.MapType:
+		return "*" + parseMapType(tt)
 	default:
 		log.Println("parseStarExpr: parse error: unknown type")
 		return "any"
