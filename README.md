@@ -126,9 +126,7 @@ type Users []User
 
 ## E2E
 
-TODO: Add E2E test on CI
-
-```zsh
+```shell
 $ go generate ./example
 $ go run ./example
 ```
