@@ -11,6 +11,78 @@ func (xs Users) UserIDs() []string {
 	return sli
 }
 
+// Ints
+func (xs Users) Ints() []int {
+	sli := make([]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Int)
+	}
+	return sli
+}
+
+// Bools
+func (xs Users) Bools() []bool {
+	sli := make([]bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Bool)
+	}
+	return sli
+}
+
+// Strs
+func (xs Users) Strs() []string {
+	sli := make([]string, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Str)
+	}
+	return sli
+}
+
+// PtrInts
+func (xs Users) PtrInts() []*int {
+	sli := make([]*int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].PtrInt)
+	}
+	return sli
+}
+
+// PtrStrs
+func (xs Users) PtrStrs() []*string {
+	sli := make([]*string, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].PtrStr)
+	}
+	return sli
+}
+
+// PtrBools
+func (xs Users) PtrBools() []*bool {
+	sli := make([]*bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].PtrBool)
+	}
+	return sli
+}
+
+// Map1s
+func (xs Users) Map1s() []map[string]int {
+	sli := make([]map[string]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Map1)
+	}
+	return sli
+}
+
+// Map2s
+func (xs Users) Map2s() []map[string]func() (string) {
+	sli := make([]map[string]func() (string), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Map2)
+	}
+	return sli
+}
+
 // Chan0s
 func (xs Users) Chan0s() []chan int {
 	sli := make([]chan int, 0, len(xs))
