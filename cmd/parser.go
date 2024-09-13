@@ -15,7 +15,7 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 	// Convert source code to ast
 	file, err := reader(args.input)
 	if err != nil {
-		return data{}, fmt.Errorf("parse error: %w", err)
+		return data{}, fmt.Errorf("parse: error: %w", err)
 	}
 
 	// Parse ast
@@ -54,19 +54,19 @@ func parseFile(node *ast.File, args arguments) ([]*ast.Field, error) {
 	// Find entity object
 	obj, ok := node.Scope.Objects[args.entity]
 	if !ok {
-		return nil, fmt.Errorf("entity not found: %s", args.entity)
+		return nil, fmt.Errorf("parseFile: entity not found: %s", args.entity)
 	}
 
 	// Find entity
 	entity, ok := obj.Decl.(*ast.TypeSpec)
 	if !ok {
-		return nil, fmt.Errorf("invalid entity: %s", args.entity)
+		return nil, fmt.Errorf("parseFile: invalid entity: %s", args.entity)
 	}
 
 	// Find fields
 	str, ok := entity.Type.(*ast.StructType)
 	if !ok {
-		return nil, fmt.Errorf("invalid type: %T", str)
+		return nil, fmt.Errorf("parseFile: invalid type: %T", str)
 	}
 	fs := str.Fields.List
 
@@ -107,7 +107,7 @@ func parseExpr(x ast.Expr) string {
 	case *ast.ChanType:
 		return parseChanType(tt)
 	}
-	log.Println("parse error: unknown type")
+	log.Println("parseExpr: parse error: unknown type", x)
 	return "any"
 }
 
