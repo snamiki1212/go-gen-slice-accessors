@@ -65,6 +65,42 @@ func (xs Users) StrPtrs() []*string {
 	return sli
 }
 
+// Fn1s
+func (xs Users) Fn1s() []func() (string) {
+	sli := make([]func() (string), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Fn1)
+	}
+	return sli
+}
+
+// Fn2s
+func (xs Users) Fn2s() []func() () {
+	sli := make([]func() (), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Fn2)
+	}
+	return sli
+}
+
+// FnPtr2s
+func (xs Users) FnPtr2s() []any {
+	sli := make([]any, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].FnPtr2)
+	}
+	return sli
+}
+
+// Fn3s
+func (xs Users) Fn3s() []func(func() (string)) (func() (int)) {
+	sli := make([]func(func() (string)) (func() (int)), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Fn3)
+	}
+	return sli
+}
+
 // Struct0s
 func (xs Users) Struct0s() []DefinedStruct0 {
 	sli := make([]DefinedStruct0, 0, len(xs))
