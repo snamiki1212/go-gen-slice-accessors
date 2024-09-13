@@ -20,11 +20,29 @@ func (xs Users) Ints() []int {
 	return sli
 }
 
+// IntPtrs
+func (xs Users) IntPtrs() []*int {
+	sli := make([]*int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].IntPtr)
+	}
+	return sli
+}
+
 // Bools
 func (xs Users) Bools() []bool {
 	sli := make([]bool, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Bool)
+	}
+	return sli
+}
+
+// BoolPtrs
+func (xs Users) BoolPtrs() []*bool {
+	sli := make([]*bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].BoolPtr)
 	}
 	return sli
 }
@@ -38,29 +56,29 @@ func (xs Users) Strs() []string {
 	return sli
 }
 
-// PtrInts
-func (xs Users) PtrInts() []*int {
-	sli := make([]*int, 0, len(xs))
-	for i := range xs {
-		sli = append(sli, xs[i].PtrInt)
-	}
-	return sli
-}
-
-// PtrStrs
-func (xs Users) PtrStrs() []*string {
+// StrPtrs
+func (xs Users) StrPtrs() []*string {
 	sli := make([]*string, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].PtrStr)
+		sli = append(sli, xs[i].StrPtr)
 	}
 	return sli
 }
 
-// PtrBools
-func (xs Users) PtrBools() []*bool {
-	sli := make([]*bool, 0, len(xs))
+// Struct0s
+func (xs Users) Struct0s() []DefinedStruct0 {
+	sli := make([]DefinedStruct0, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].PtrBool)
+		sli = append(sli, xs[i].Struct0)
+	}
+	return sli
+}
+
+// Struct1s
+func (xs Users) Struct1s() []DefinedStruct1 {
+	sli := make([]DefinedStruct1, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Struct1)
 	}
 	return sli
 }
@@ -74,11 +92,29 @@ func (xs Users) Map1s() []map[string]int {
 	return sli
 }
 
+// MapPtr1s
+func (xs Users) MapPtr1s() []*map[string]int {
+	sli := make([]*map[string]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].MapPtr1)
+	}
+	return sli
+}
+
 // Map2s
 func (xs Users) Map2s() []map[string]func() (string) {
 	sli := make([]map[string]func() (string), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Map2)
+	}
+	return sli
+}
+
+// MapPtr2s
+func (xs Users) MapPtr2s() []*map[string]func() (string) {
+	sli := make([]*map[string]func() (string), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].MapPtr2)
 	}
 	return sli
 }
@@ -92,6 +128,15 @@ func (xs Users) Chan0s() []chan int {
 	return sli
 }
 
+// ChanPtr0s
+func (xs Users) ChanPtr0s() []*chan int {
+	sli := make([]*chan int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ChanPtr0)
+	}
+	return sli
+}
+
 // Chan1s
 func (xs Users) Chan1s() []chan func() (string) {
 	sli := make([]chan func() (string), 0, len(xs))
@@ -101,29 +146,38 @@ func (xs Users) Chan1s() []chan func() (string) {
 	return sli
 }
 
-// ChanAs
-func (xs Users) ChanAs() []*chan int {
-	sli := make([]*chan int, 0, len(xs))
-	for i := range xs {
-		sli = append(sli, xs[i].ChanA)
-	}
-	return sli
-}
-
-// ChanBs
-func (xs Users) ChanBs() []*chan func() (string) {
+// ChanPtr1s
+func (xs Users) ChanPtr1s() []*chan func() (string) {
 	sli := make([]*chan func() (string), 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].ChanB)
+		sli = append(sli, xs[i].ChanPtr1)
 	}
 	return sli
 }
 
-// Chanies
-func (xs Users) Chanies() []*chan<- int {
+// ChanSendPtr0s
+func (xs Users) ChanSendPtr0s() []*chan<- int {
 	sli := make([]*chan<- int, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].ChanY)
+		sli = append(sli, xs[i].ChanSendPtr0)
+	}
+	return sli
+}
+
+// ChanRecv0s
+func (xs Users) ChanRecv0s() []<-chan int {
+	sli := make([]<-chan int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ChanRecv0)
+	}
+	return sli
+}
+
+// ChanRecvPtr0s
+func (xs Users) ChanRecvPtr0s() []*<-chan int {
+	sli := make([]*<-chan int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ChanRecvPtr0)
 	}
 	return sli
 }
