@@ -131,6 +131,11 @@ $ go generate ./example
 $ go run ./example
 ```
 
+## TODO
+
+- Add pkg name / version name in generated code.
+- Support all type. Check /example file.
+
 ## LICENSE
 
 [MIT](./LICENSE)
