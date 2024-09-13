@@ -29,5 +29,11 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-      - name: Test
+      - name: Unit Test
         run: go test -v ./...
+
+      - name: Example Test
+        run: |
+          go generate ./example
+          git diff --exit-code ./example
+          go run ./example
