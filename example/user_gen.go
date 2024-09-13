@@ -83,15 +83,6 @@ func (xs Users) Fn2s() []func() () {
 	return sli
 }
 
-// FnPtr2s
-func (xs Users) FnPtr2s() []any {
-	sli := make([]any, 0, len(xs))
-	for i := range xs {
-		sli = append(sli, xs[i].FnPtr2)
-	}
-	return sli
-}
-
 // Fn3s
 func (xs Users) Fn3s() []func(func() (string)) (func() (int)) {
 	sli := make([]func(func() (string)) (func() (int)), 0, len(xs))
