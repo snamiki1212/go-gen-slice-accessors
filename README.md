@@ -68,8 +68,7 @@ $ go run ./example
 
 ## TODO
 
-- Add pkg name / version name in generated code.
-- Support all type. Check /example file.
+- Add version name in generated code.
 
 ## LICENSE
 
