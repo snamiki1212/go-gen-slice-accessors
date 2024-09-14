@@ -480,6 +480,15 @@ func (xs Users) ChanSlicePtr1s() [][]*chan func() (string) {
 	return sli
 }
 
+// ChanSend0s
+func (xs Users) ChanSend0s() []chan<- int {
+	sli := make([]chan<- int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ChanSend0)
+	}
+	return sli
+}
+
 // ChanSendPtr0s
 func (xs Users) ChanSendPtr0s() []*chan<- int {
 	sli := make([]*chan<- int, 0, len(xs))

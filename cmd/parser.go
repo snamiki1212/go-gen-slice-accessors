@@ -29,7 +29,6 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 
 	// Transform data
 	fs = fs.
-		exclude().
 		excludeByFieldName(args.fieldNamesToExclude).
 		buildAccessor(newPluralizer(), args.renames)
 
@@ -261,17 +260,5 @@ func (fs fields) buildAccessor(p pluralizer, rule map[string]string) fields {
 func (fs fields) excludeByFieldName(targets []string) fields {
 	return slices.DeleteFunc(fs, func(f field) bool {
 		return slices.Contains(targets, f.Name)
-	})
-}
-
-// Exclude
-func (fs fields) exclude() fields {
-	prefixes := []string{
-		"chan<-",
-	}
-	return slices.DeleteFunc(fs, func(f field) bool {
-		return slices.ContainsFunc(prefixes, func(prefix string) bool {
-			return strings.HasPrefix(f.Type, prefix)
-		})
 	})
 }
