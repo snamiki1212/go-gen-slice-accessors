@@ -204,7 +204,7 @@ type User struct {
 					{Accessor: "chan1s", Name: "chan1", Type: "chan func() ()"},
 					{Accessor: "chanAs", Name: "chanA", Type: "*chan string"},
 					{Accessor: "chanBs", Name: "chanB", Type: "*chan func() ()"},
-					// {Accessor: "chanS0s", Name: "chanS0", Type: "chan<- string"}, // exclude me
+					{Accessor: "chanS0s", Name: "chanS0", Type: "chan<- string"},
 					{Accessor: "chanR0s", Name: "chanR0", Type: "<-chan string"},
 				},
 			},
