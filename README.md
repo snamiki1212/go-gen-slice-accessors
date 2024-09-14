@@ -56,14 +56,8 @@ Flags:
 
 ## [Examples](./example)
 
-- Exclude field
-
-  - [source code](./example/exclude.go)
-  - [generated code](./example/exclude_gen.go)
-
-- Define accessor name
-  - [source code](./example/exclude.go)
-  - [generated code](./example/exclude_gen.go)
+- Exclude fields ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
+- Rename accessors ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
 
 ## E2E
 
