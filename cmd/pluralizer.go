@@ -51,10 +51,10 @@ func (p pluralizer) doReplace(word string, rule pluralizeRule) string {
 func newDefaultStrRules() strRules {
 	return strRules{
 		{`(?i).*`, `${0}s`},
-		{`(?i)(?:fe|f)$`, `${1}ves`},
-		{`(?i)([^aiueo])y$`, `${1}ies`},
-		{`(?i)([^aiueo])o$`, `${1}oes`},
-		{`(?i)([s|z|sh|ch|x])$`, `${1}es`},
+		{`(?:fe|f)$`, `${1}ves`},
+		{`([^aiueo])y$`, `${1}ies`},
+		{`([^aiueo])o$`, `${1}oes`},
+		{`([s|z|sh|ch|x])$`, `${1}es`},
 	}
 }
 

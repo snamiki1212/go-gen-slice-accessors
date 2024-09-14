@@ -19,6 +19,7 @@ func Test_pluralizer_pluralize(t *testing.T) {
 		"ok: f or fe: 2": {recv: newPluralizer(), arg: "leaf", want: "leaves"},
 		"ok: x + y: 1":   {recv: newPluralizer(), arg: "city", want: "cities"},
 		"ok: x + y: 2":   {recv: newPluralizer(), arg: "History", want: "Histories"},
+		"ok: x + y: 3":   {recv: newPluralizer(), arg: "HistorY", want: "HistorYs"},
 		"ok: x + o: 1":   {recv: newPluralizer(), arg: "hero", want: "heroes"},
 		"ok: es: 1":      {recv: newPluralizer(), arg: "kiss", want: "kisses"},
 		"ok: es: 2":      {recv: newPluralizer(), arg: "bus", want: "buses"},
