@@ -129,6 +129,15 @@ func (xs Users) Fn1s() []func() (string) {
 	return sli
 }
 
+// FnPtr1s
+func (xs Users) FnPtr1s() []*func() (string) {
+	sli := make([]*func() (string), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].FnPtr1)
+	}
+	return sli
+}
+
 // Fn2s
 func (xs Users) Fn2s() []func() () {
 	sli := make([]func() (), 0, len(xs))
@@ -138,11 +147,29 @@ func (xs Users) Fn2s() []func() () {
 	return sli
 }
 
+// FnPtr2s
+func (xs Users) FnPtr2s() []*func() () {
+	sli := make([]*func() (), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].FnPtr2)
+	}
+	return sli
+}
+
 // Fn3s
 func (xs Users) Fn3s() []func(func() (string)) (func() (int)) {
 	sli := make([]func(func() (string)) (func() (int)), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Fn3)
+	}
+	return sli
+}
+
+// FnPtr3s
+func (xs Users) FnPtr3s() []func(*func() (string)) (*func() (int)) {
+	sli := make([]func(*func() (string)) (*func() (int)), 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].FnPtr3)
 	}
 	return sli
 }

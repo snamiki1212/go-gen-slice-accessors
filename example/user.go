@@ -20,12 +20,12 @@ type User struct {
 	StrPtrSlice  []*string
 
 	// Function
-	Fn1 func() string
-	// FnPtr1 *func() string
-	Fn2 func()
-	// FnPtr2 *func()
-	Fn3 func(func() string) func() int
-	// FnPtr3 func(*func() string) *func() int
+	Fn1    func() string
+	FnPtr1 *func() string
+	Fn2    func()
+	FnPtr2 *func()
+	Fn3    func(func() string) func() int
+	FnPtr3 func(*func() string) *func() int
 
 	// Struct
 	// InlineStruct0 struct{ Name string } // NOTE: not supported

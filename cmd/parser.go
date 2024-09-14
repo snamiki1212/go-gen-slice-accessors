@@ -105,7 +105,6 @@ func parseExpr(x ast.Expr) string {
 		return parseMapType(tt)
 	case *ast.ChanType:
 		return parseChanType(tt)
-		// array type
 	case *ast.ArrayType:
 		return parseArrayType(tt)
 	}
@@ -149,8 +148,12 @@ func parseStarExpr(x *ast.StarExpr) string {
 		return "*" + parseMapType(tt)
 	case *ast.ChanType:
 		return "*" + parseChanType(tt)
+	case *ast.ArrayType:
+		return "*" + parseArrayType(tt)
+	case *ast.FuncType:
+		return "*" + parseFuncType(tt)
 	default:
-		log.Println("parseStarExpr: parse error: unknown type")
+		log.Println("parseStarExpr: parse error: unknown type", x)
 		return "any"
 	}
 }
