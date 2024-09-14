@@ -31,7 +31,7 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 	fs = fs.
 		exclude().
 		excludeByFieldName(args.fieldNamesToExclude).
-		buildAccessor(newPluralizer(), args.accessors)
+		buildAccessor(newPluralizer(), args.renames)
 
 	return data{
 		fields:    fs,
@@ -84,9 +84,9 @@ type (
 
 	// Struct field from entity in source code.
 	field struct {
-		Name     string // field name
+		Name     string // field name like UserID
 		Type     string // field type like string,int64...
-		Accessor string // accessor name
+		Accessor string // accessor name like UserIDs
 	}
 )
 
@@ -240,8 +240,8 @@ func (f field) display() string {
 
 // Build accessor name.
 func (f *field) buildAccessor(p pluralizer, rule map[string]string) *field {
-	if acc, ok := rule[f.Name]; ok {
-		f.Accessor = acc
+	if ac, ok := rule[f.Name]; ok {
+		f.Accessor = ac
 		return f
 	}
 

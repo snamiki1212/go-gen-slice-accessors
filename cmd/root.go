@@ -46,15 +46,15 @@ type arguments struct {
 	// Field names to exclude
 	fieldNamesToExclude []string
 
-	// Mapping field name to accessor name
-	accessors map[string]string // key: field name, value: acccessor name.
+	// Mapping field name to renamed name
+	renames map[string]string // key: field name, value: acccessor name.
 }
 
-var accessors []string
+var renames []string
 
 // arguments
 var args = arguments{
-	accessors: map[string]string{},
+	renames: map[string]string{},
 }
 
 func (a *arguments) loadAccessors(as []string) error {
@@ -62,11 +62,11 @@ func (a *arguments) loadAccessors(as []string) error {
 	for _, ac := range as {
 		pair := strings.Split(ac, ":")
 		if len(pair) != 2 {
-			container = append(container, fmt.Errorf("invalid accessor: %s", ac))
+			container = append(container, fmt.Errorf("invalid rename: %s", ac))
 			continue
 		}
-		field, accessor := pair[0], pair[1]
-		args.accessors[field] = accessor
+		field, rename := pair[0], pair[1]
+		args.renames[field] = rename
 	}
 	if len(container) != 0 {
 		return fmt.Errorf("%v", container)
@@ -76,8 +76,8 @@ func (a *arguments) loadAccessors(as []string) error {
 
 func loader() error {
 	// Load arguments
-	if err := args.loadAccessors(accessors); err != nil {
-		return fmt.Errorf("load accessor error: %w", err)
+	if err := args.loadAccessors(renames); err != nil {
+		return fmt.Errorf("load rename error: %w", err)
 	}
 	return nil
 }
@@ -142,6 +142,6 @@ func init() {
 	// fieldNamesToExclude
 	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "field names to exclude")
 
-	// accessor
-	rootCmd.Flags().StringSliceVarP(&accessors, "accessor", "a", []string{}, "accessor name for field / e.g. --accessor=Name:GetName")
+	// rename
+	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "rename accessor name / e.g. --rename=Name:GetName")
 }

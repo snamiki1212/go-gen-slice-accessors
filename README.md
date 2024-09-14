@@ -45,18 +45,18 @@ Usage:
   gen-slice-accessors [flags]
 
 Flags:
-  -a, --accessor strings   accessor name for field / e.g. --accessor=Name:GetName
-  -e, --entity string      target entity name
-  -x, --exclude strings    field names to exclude
-  -h, --help               help for gen-slice-accessors
-  -i, --input string       input file name
-  -o, --output string      output file name
-  -s, --slice string       target slice name
+  -e, --entity string     target entity name
+  -x, --exclude strings   field names to exclude
+  -h, --help              help for gen-slice-accessors
+  -i, --input string      input file name
+  -o, --output string     output file name
+  -r, --rename strings    rename accessor name / e.g. --rename=Name:GetName
+  -s, --slice string      target slice name
 ```
 
 ## [Examples](./example)
 
-- Exclude fields ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
+- Exclude accessors ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
 - Rename accessors ([src](./example/rename.go) / [generated code](./example/rename_gen.go))
 
 ## E2E
@@ -65,10 +65,6 @@ Flags:
 $ go generate ./example
 $ go run ./example
 ```
-
-## TODO
-
-- Add version name in generated code.
 
 ## LICENSE
 

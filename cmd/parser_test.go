@@ -62,7 +62,7 @@ type User struct {
 		},
 		"ok: rename": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, accessors: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
+				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, renames: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
 				src: `
 package user
 
