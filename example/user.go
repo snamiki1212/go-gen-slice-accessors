@@ -5,13 +5,19 @@ type User struct {
 	// Example
 	UserID string
 
-	// Value
-	Int     int
-	IntPtr  *int
-	Bool    bool
-	BoolPtr *bool
-	Str     string
-	StrPtr  *string
+	// Primitive
+	Int          int
+	IntPtr       *int
+	IntSlice     []int
+	IntPtrSlice  []*int
+	Bool         bool
+	BoolPtr      *bool
+	BoolSlice    []bool
+	BoolPtrSlice []*bool
+	Str          string
+	StrPtr       *string
+	StrSlice     []string
+	StrPtrSlice  []*string
 
 	// Function
 	Fn1 func() string
@@ -28,15 +34,14 @@ type User struct {
 	Struct1 DefinedStruct1
 
 	// Map
-	Map1    map[string]int
-	MapPtr1 *map[string]int
-	Map2    map[string]func() string
-	MapPtr2 *map[string]func() string
-
-	// Slices
-	SliceInt  []int
-	SliceStr  []string
-	SliceBool []bool
+	Map1         map[string]int
+	MapPtr1      *map[string]int
+	MapSlice1    []map[string]int
+	MapPtrSlice1 []*map[string]int
+	Map2         map[string]func() string
+	MapPtr2      *map[string]func() string
+	MapSlice2    []map[string]func() string
+	MapPtrSlice2 []*map[string]func() string
 
 	// Exclude
 	CreatedAt int64

@@ -30,6 +30,24 @@ func (xs Users) IntPtrs() []*int {
 	return sli
 }
 
+// IntSlices
+func (xs Users) IntSlices() [][]int {
+	sli := make([][]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].IntSlice)
+	}
+	return sli
+}
+
+// IntPtrSlices
+func (xs Users) IntPtrSlices() [][]*int {
+	sli := make([][]*int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].IntPtrSlice)
+	}
+	return sli
+}
+
 // Bools
 func (xs Users) Bools() []bool {
 	sli := make([]bool, 0, len(xs))
@@ -48,6 +66,24 @@ func (xs Users) BoolPtrs() []*bool {
 	return sli
 }
 
+// BoolSlices
+func (xs Users) BoolSlices() [][]bool {
+	sli := make([][]bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].BoolSlice)
+	}
+	return sli
+}
+
+// BoolPtrSlices
+func (xs Users) BoolPtrSlices() [][]*bool {
+	sli := make([][]*bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].BoolPtrSlice)
+	}
+	return sli
+}
+
 // Strs
 func (xs Users) Strs() []string {
 	sli := make([]string, 0, len(xs))
@@ -62,6 +98,24 @@ func (xs Users) StrPtrs() []*string {
 	sli := make([]*string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].StrPtr)
+	}
+	return sli
+}
+
+// StrSlices
+func (xs Users) StrSlices() [][]string {
+	sli := make([][]string, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].StrSlice)
+	}
+	return sli
+}
+
+// StrPtrSlices
+func (xs Users) StrPtrSlices() [][]*string {
+	sli := make([][]*string, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].StrPtrSlice)
 	}
 	return sli
 }
@@ -129,6 +183,24 @@ func (xs Users) MapPtr1s() []*map[string]int {
 	return sli
 }
 
+// MapSlice1s
+func (xs Users) MapSlice1s() [][]map[string]int {
+	sli := make([][]map[string]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].MapSlice1)
+	}
+	return sli
+}
+
+// MapPtrSlice1s
+func (xs Users) MapPtrSlice1s() [][]*map[string]int {
+	sli := make([][]*map[string]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].MapPtrSlice1)
+	}
+	return sli
+}
+
 // Map2s
 func (xs Users) Map2s() []map[string]func() (string) {
 	sli := make([]map[string]func() (string), 0, len(xs))
@@ -147,29 +219,20 @@ func (xs Users) MapPtr2s() []*map[string]func() (string) {
 	return sli
 }
 
-// SliceInts
-func (xs Users) SliceInts() [][]int {
-	sli := make([][]int, 0, len(xs))
+// MapSlice2s
+func (xs Users) MapSlice2s() [][]map[string]func() (string) {
+	sli := make([][]map[string]func() (string), 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].SliceInt)
+		sli = append(sli, xs[i].MapSlice2)
 	}
 	return sli
 }
 
-// SliceStrs
-func (xs Users) SliceStrs() [][]string {
-	sli := make([][]string, 0, len(xs))
+// MapPtrSlice2s
+func (xs Users) MapPtrSlice2s() [][]*map[string]func() (string) {
+	sli := make([][]*map[string]func() (string), 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].SliceStr)
-	}
-	return sli
-}
-
-// SliceBools
-func (xs Users) SliceBools() [][]bool {
-	sli := make([][]bool, 0, len(xs))
-	for i := range xs {
-		sli = append(sli, xs[i].SliceBool)
+		sli = append(sli, xs[i].MapPtrSlice2)
 	}
 	return sli
 }
