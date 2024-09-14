@@ -60,7 +60,7 @@ type User struct {
 				},
 			},
 		},
-		"ok: custom accessor naming": {
+		"ok: rename": {
 			args: args{
 				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, accessors: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
 				src: `
@@ -156,6 +156,25 @@ type User struct {
 					{Accessor: "map1s", Name: "map1", Type: "map[string]func() ()"},
 					{Accessor: "mapAs", Name: "mapA", Type: "*map[string]string"},
 					{Accessor: "mapBs", Name: "mapB", Type: "*map[string]func() ()"},
+				},
+			},
+		},
+		"ok: slice": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users"},
+				src: `
+package user
+
+type User struct {
+	SliceInt []int
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Accessor: "SliceInts", Name: "SliceInt", Type: "[]int"},
 				},
 			},
 		},

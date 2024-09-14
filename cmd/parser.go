@@ -103,12 +103,19 @@ func parseExpr(x ast.Expr) string {
 		return parseEllipsis(tt)
 	case *ast.MapType:
 		return parseMapType(tt)
-	// chan
 	case *ast.ChanType:
 		return parseChanType(tt)
+		// array type
+	case *ast.ArrayType:
+		return parseArrayType(tt)
 	}
 	log.Println("parseExpr: parse error: unknown type", x)
 	return "any"
+}
+
+// Parse array type.
+func parseArrayType(x *ast.ArrayType) string {
+	return fmt.Sprintf("[]%s", parseExpr(x.Elt))
 }
 
 // Parse chan type.

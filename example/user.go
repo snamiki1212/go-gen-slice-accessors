@@ -22,10 +22,8 @@ type User struct {
 	// FnPtr3 func(*func() string) *func() int
 
 	// Struct
-	// InlineStruct0 struct{}
-	// InlineStruct1 struct {
-	// 	Name string
-	// }
+	// InlineStruct0 struct{ Name string } // NOTE: not supported
+	// InlineStruct1 struct { Name string } // NOTE: not supported
 	Struct0 DefinedStruct0
 	Struct1 DefinedStruct1
 
@@ -36,9 +34,9 @@ type User struct {
 	MapPtr2 *map[string]func() string
 
 	// Slices
-	// SliInt  []int
-	// SliStr  []string
-	// SliBool []bool
+	SliceInt  []int
+	SliceStr  []string
+	SliceBool []bool
 
 	// Exclude
 	CreatedAt int64

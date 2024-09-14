@@ -147,6 +147,33 @@ func (xs Users) MapPtr2s() []*map[string]func() (string) {
 	return sli
 }
 
+// SliceInts
+func (xs Users) SliceInts() [][]int {
+	sli := make([][]int, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].SliceInt)
+	}
+	return sli
+}
+
+// SliceStrs
+func (xs Users) SliceStrs() [][]string {
+	sli := make([][]string, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].SliceStr)
+	}
+	return sli
+}
+
+// SliceBools
+func (xs Users) SliceBools() [][]bool {
+	sli := make([][]bool, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].SliceBool)
+	}
+	return sli
+}
+
 // Chan0s
 func (xs Users) Chan0s() []chan int {
 	sli := make([]chan int, 0, len(xs))
