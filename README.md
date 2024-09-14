@@ -56,6 +56,7 @@ Flags:
 
 ## [Examples](./example)
 
+- Common case ([src](./example/user.go) / [generated code](./example/user_gen.go))
 - Exclude accessors ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
 - Rename accessors ([src](./example/rename.go) / [generated code](./example/rename_gen.go))
 
