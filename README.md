@@ -2,6 +2,9 @@
 
 Generate accessors for each field in the slice struct.
 
+- <b>Easy Setup & Removal</b>
+- <b>Zero Package Size, Code Genration</b>
+
 <img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
 
 ## Usage
