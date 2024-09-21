@@ -43,7 +43,7 @@ type Users []User
 ```
 
 > [!TIP]
-> Install a binary in `go:generate` and no need care about pre requirements for team, just run `go generate .`.
+> Install a binary with `go:generate` and your team no need care about installation but just run `go generate .`.
 >
 > ```diff
 > +//go:generate go install github.com/snamiki1212/go-gen-slice-accessors@latest
