@@ -9,6 +9,7 @@ Generate accessors for each field in the slice struct.
 ```diff filename="user.go"
 package main
 
++//go:generate go install github.com/snamiki1212/go-gen-slice-accessors@latest
 +//go:generate go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go
 type User struct {
   UserID    string
