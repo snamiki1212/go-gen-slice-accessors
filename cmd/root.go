@@ -57,7 +57,7 @@ var args = arguments{
 	renames: map[string]string{},
 }
 
-func (a *arguments) loadAccessors(as []string) error {
+func (a *arguments) loadRename(as []string) error {
 	container := make([]error, 0)
 	for _, ac := range as {
 		pair := strings.Split(ac, ":")
@@ -76,7 +76,7 @@ func (a *arguments) loadAccessors(as []string) error {
 
 func loader() error {
 	// Load arguments
-	if err := args.loadAccessors(renames); err != nil {
+	if err := args.loadRename(renames); err != nil {
 		return fmt.Errorf("load rename error: %w", err)
 	}
 	return nil
