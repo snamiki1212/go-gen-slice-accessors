@@ -2,6 +2,8 @@
 
 Generate accessors for each field in the slice struct.
 
+<img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
+
 ## Usage
 
 ### 1. Install binary
