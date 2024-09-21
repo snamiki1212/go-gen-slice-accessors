@@ -38,8 +38,6 @@ type Users []User
 ## Help
 
 ```shell
-$ go run -mod=mod github.com/snamiki1212/go-gen-slice-accessors@latest --help
-
 Generate accessors for each field in the slice struct.
 
 Usage:
