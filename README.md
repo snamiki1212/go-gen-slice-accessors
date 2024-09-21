@@ -59,6 +59,7 @@ Flags:
 - Common case ([src](./example/user.go) / [generated code](./example/user_gen.go))
 - Exclude accessors ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
 - Rename accessors ([src](./example/rename.go) / [generated code](./example/rename_gen.go))
+- Private accessors ([src](./example/private.go) / [generated code](./example/private_gen.go))
 
 ## E2E
 
