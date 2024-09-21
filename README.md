@@ -50,7 +50,8 @@ type Users []User
 > ```diff
 > +//go:generate go install github.com/snamiki1212/go-gen-slice-accessors@latest
 > +//go:generate go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go
->  type UserList []User
+>   type User struct {
+>     ...
 > ```
 
 ## Help
