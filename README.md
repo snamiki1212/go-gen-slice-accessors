@@ -42,6 +42,15 @@ type Users []User
 +}
 ```
 
+> [!TIP]
+> Install a binary in `go:generate` and no need care about pre requirements for team, just run `go generate .`.
+>
+> ```diff
+> +//go:generate go install github.com/snamiki1212/go-gen-slice-accessors@latest
+> +//go:generate go-gen-slice-accessors --entity User --slice Users --input user.go --output user_gen.go
+>  type UserList []User
+> ```
+
 ## Help
 
 ```shell
