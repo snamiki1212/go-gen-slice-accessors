@@ -49,6 +49,7 @@ type arguments struct {
 	// Mapping field name to renamed name
 	renames map[string]string // key: field name, value: acccessor name.
 
+	// Import path name
 	importPaths []importPath
 }
 
@@ -65,6 +66,11 @@ var renames []string
 var args = arguments{
 	renames:     map[string]string{},
 	importPaths: make([]importPath, 0),
+}
+
+// HasImportPath
+func (a *arguments) HasImportPath() bool {
+	return len(a.importPaths) != 0
 }
 
 func (a *arguments) loadRename(as []string) error {
@@ -106,13 +112,13 @@ func (a *arguments) loadImportPath(sli []string) error {
 }
 
 // GenerateImportPath
-func (a *arguments) GenerateImportPath() string {
-	if len(a.importPaths) == 0 {
+func GenerateImportPath(importPaths []importPath) string {
+	if len(importPaths) == 0 {
 		return ""
 	}
 
 	var txt string
-	for _, elem := range a.importPaths {
+	for _, elem := range importPaths {
 		switch elem.alias {
 		case "": // no alias
 			txt += fmt.Sprintf("  \"%s\"\n", elem.path)
@@ -183,27 +189,27 @@ func Execute() {
 
 func init() {
 	// entity
-	rootCmd.Flags().StringVarP(&args.entity, "entity", "e", "", "target entity name")
+	rootCmd.Flags().StringVarP(&args.entity, "entity", "e", "", "[required] Target entity name")
 	_ = rootCmd.MarkFlagRequired("entity")
 
 	// slice
-	rootCmd.Flags().StringVarP(&args.slice, "slice", "s", "", "target slice name")
+	rootCmd.Flags().StringVarP(&args.slice, "slice", "s", "", "[required] Target slice name")
 	_ = rootCmd.MarkFlagRequired("slice")
 
 	// input
-	rootCmd.Flags().StringVarP(&args.input, "input", "i", "", "input file name")
+	rootCmd.Flags().StringVarP(&args.input, "input", "i", "", "[required] Input file name")
 	_ = rootCmd.MarkFlagRequired("input")
 
 	// output
-	rootCmd.Flags().StringVarP(&args.output, "output", "o", "", "output file name")
+	rootCmd.Flags().StringVarP(&args.output, "output", "o", "", "[required] Output file name")
 	_ = rootCmd.MarkFlagRequired("output")
 
 	// fieldNamesToExclude
-	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "field names to exclude")
+	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
 
 	// rename
-	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "rename accessor name \n e.g. --rename=Name:GetName")
+	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
 
 	// import
-	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
+	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "Import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
 }

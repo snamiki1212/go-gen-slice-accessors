@@ -61,6 +61,9 @@ type User struct {
 					{Accessor: "CreatedAts", Name: "CreatedAt", Type: "time.Time"},
 					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
 				},
+				importPaths: []importPath{
+					{path: "time", alias: ""},
+				},
 			},
 		},
 		"ok: exlucde": {

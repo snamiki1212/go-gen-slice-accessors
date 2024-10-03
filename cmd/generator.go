@@ -42,7 +42,15 @@ func generate(data data, args arguments) (string, error) {
 	txt += "// Based on information from https://github.com/snamiki1212/go-gen-slice-accessors\n"
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
-	txt += args.GenerateImportPath()
+	txt += func() string {
+		var paths []importPath
+		if args.HasImportPath() {
+			paths = args.importPaths
+		} else {
+			paths = data.importPaths
+		}
+		return GenerateImportPath(paths)
+	}()
 
 	// append templates
 	var doc bytes.Buffer

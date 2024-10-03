@@ -32,10 +32,14 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 		excludeByFieldName(args.fieldNamesToExclude).
 		buildAccessor(newPluralizer(), args.renames)
 
+	importPaths := getImportPathFromFile(file)
+	importPaths = filterByUsingImportPath(importPaths, fs)
+
 	return data{
-		fields:    fs,
-		pkgName:   getPackageNameFromFile(file),
-		sliceName: args.slice,
+		fields:      fs,
+		pkgName:     getPackageNameFromFile(file),
+		sliceName:   args.slice,
+		importPaths: importPaths,
 	}, nil
 }
 
@@ -47,6 +51,52 @@ func reader(path string) (*ast.File, error) {
 
 // Get package name.
 func getPackageNameFromFile(node *ast.File) string { return node.Name.Name }
+
+// Get import paths from file.
+func getImportPathFromFile(node *ast.File) []importPath {
+	var paths []importPath
+	for _, imp := range node.Imports {
+		alias := ""
+		if imp.Name != nil {
+			alias = imp.Name.Name
+		}
+		paths = append(paths, importPath{path: strings.Trim(imp.Path.Value, `"`), alias: alias})
+	}
+	return paths
+}
+
+// Filter import paths by using fields.
+func filterByUsingImportPath(imports []importPath, fs fields) []importPath {
+	ts := []string{} // Imported type name from filed type ex) time.Time -> time
+	for _, f := range fs {
+		if strings.Contains(f.Type, ".") {
+			ts = append(ts, strings.Split(f.Type, ".")[0])
+		}
+	}
+
+	var res []importPath
+	for _, tn := range ts {
+		for _, imp := range imports {
+			switch imp.alias {
+			case "": // no alias
+				path := imp.path
+				// xxx/yyyy/zzz -> zzz
+				if strings.Contains(path, "/") {
+					path = path[strings.LastIndex(path, "/")+1:]
+				}
+				if tn == path {
+					res = append(res, imp)
+				}
+			default: // has alias
+				if tn == imp.alias {
+					res = append(res, imp)
+				}
+			}
+		}
+	}
+
+	return res
+}
 
 // Parse file.
 func parseFile(node *ast.File, args arguments) ([]*ast.Field, error) {
@@ -75,9 +125,10 @@ func parseFile(node *ast.File, args arguments) ([]*ast.Field, error) {
 type (
 	// Data from parsed source code and will be used in code generation.
 	data struct {
-		fields    fields
-		pkgName   string
-		sliceName string
+		fields      fields
+		pkgName     string
+		sliceName   string
+		importPaths []importPath
 	}
 	fields []field
 

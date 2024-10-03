@@ -80,17 +80,17 @@ Usage:
   gen-slice-accessors [flags]
 
 Flags:
-  -e, --entity string     target entity name
-  -x, --exclude strings   field names to exclude
+  -e, --entity string     [required] Target entity name
+  -x, --exclude strings   Field names to exclude
   -h, --help              help for gen-slice-accessors
-  -m, --import strings    import path name
+  -m, --import strings    Import path name
                            e.g. --import=time
                            e.g. --import=time:aliasTime
-  -i, --input string      input file name
-  -o, --output string     output file name
-  -r, --rename strings    rename accessor name
+  -i, --input string      [required] Input file name
+  -o, --output string     [required] Output file name
+  -r, --rename strings    Rename accessor name
                            e.g. --rename=Name:GetName
-  -s, --slice string      target slice name
+  -s, --slice string      [required] Target slice name
 ```
 
 ## Examples

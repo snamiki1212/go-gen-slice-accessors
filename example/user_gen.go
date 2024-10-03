@@ -3,6 +3,13 @@
 
 package main
 
+import (
+  "time"
+  alias_time "time"
+  "bytes"
+  alias_bytes "bytes"
+)
+
 // UserIDs
 func (xs Users) UserIDs() []string {
 	sli := make([]string, 0, len(xs))
@@ -548,6 +555,78 @@ func (xs Users) ChanRecvSlicePtr0s() [][]*<-chan int {
 	sli := make([][]*<-chan int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].ChanRecvSlicePtr0)
+	}
+	return sli
+}
+
+// Import1s
+func (xs Users) Import1s() []time.Time {
+	sli := make([]time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Import1)
+	}
+	return sli
+}
+
+// ImportPtr1s
+func (xs Users) ImportPtr1s() []*time.Time {
+	sli := make([]*time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportPtr1)
+	}
+	return sli
+}
+
+// ImportAlias1s
+func (xs Users) ImportAlias1s() []alias_time.Time {
+	sli := make([]alias_time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportAlias1)
+	}
+	return sli
+}
+
+// ImportAliasPtr1s
+func (xs Users) ImportAliasPtr1s() []*alias_time.Time {
+	sli := make([]*alias_time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportAliasPtr1)
+	}
+	return sli
+}
+
+// Import2s
+func (xs Users) Import2s() []bytes.Buffer {
+	sli := make([]bytes.Buffer, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].Import2)
+	}
+	return sli
+}
+
+// ImportPtr2s
+func (xs Users) ImportPtr2s() []*bytes.Buffer {
+	sli := make([]*bytes.Buffer, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportPtr2)
+	}
+	return sli
+}
+
+// ImportAlias2s
+func (xs Users) ImportAlias2s() []alias_bytes.Buffer {
+	sli := make([]alias_bytes.Buffer, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportAlias2)
+	}
+	return sli
+}
+
+// ImportAliasPtr2s
+func (xs Users) ImportAliasPtr2s() []*alias_bytes.Buffer {
+	sli := make([]*alias_bytes.Buffer, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ImportAliasPtr2)
 	}
 	return sli
 }
