@@ -26,7 +26,7 @@ type templateMapper struct {
 }
 
 // Generate code
-func generate(data data) (string, error) {
+func generate(data data, args arguments) (string, error) {
 	pkgName := data.pkgName
 	sliceName := data.sliceName
 	infos := data.fields
@@ -42,6 +42,7 @@ func generate(data data) (string, error) {
 	txt += "// Based on information from https://github.com/snamiki1212/go-gen-slice-accessors\n"
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
+	txt += args.GenerateImportPath()
 
 	// append templates
 	var doc bytes.Buffer

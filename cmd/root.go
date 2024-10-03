@@ -48,37 +48,91 @@ type arguments struct {
 
 	// Mapping field name to renamed name
 	renames map[string]string // key: field name, value: acccessor name.
+
+	importPaths map[string]string
 }
 
+// Import path name
+var importPaths []string
 var renames []string
 
 // arguments
 var args = arguments{
-	renames: map[string]string{},
+	renames:     map[string]string{},
+	importPaths: map[string]string{},
 }
 
 func (a *arguments) loadRename(as []string) error {
-	container := make([]error, 0)
+	errs := make([]error, 0)
 	for _, ac := range as {
 		pair := strings.Split(ac, ":")
 		if len(pair) != 2 {
-			container = append(container, fmt.Errorf("invalid rename: %s", ac))
+			errs = append(errs, fmt.Errorf("invalid rename: %s", ac))
 			continue
 		}
 		field, rename := pair[0], pair[1]
 		args.renames[field] = rename
 	}
-	if len(container) != 0 {
-		return fmt.Errorf("%v", container)
+	if len(errs) != 0 {
+		return fmt.Errorf("%v", errs)
 	}
 	return nil
 }
 
-func loader() error {
-	// Load arguments
-	if err := args.loadRename(renames); err != nil {
-		return fmt.Errorf("load rename error: %w", err)
+func (a *arguments) loadImportPath(sli []string) error {
+	errs := make([]error, 0)
+	for _, str := range sli {
+		pair := strings.Split(str, ":")
+		switch len(pair) {
+		case 1: // only path
+			path := pair[0]
+			args.importPaths[path] = "" // no alias
+		case 2: // alias:path case
+			alias, path := pair[0], pair[1]
+			args.importPaths[path] = alias
+		default:
+			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
+		}
 	}
+	if len(errs) != 0 {
+		return fmt.Errorf("%v", errs)
+	}
+	return nil
+}
+
+// GenerateImportPath
+func (a *arguments) GenerateImportPath() string {
+	if len(a.importPaths) == 0 {
+		return ""
+	}
+
+	var txt string
+	for path, alias := range a.importPaths {
+		switch alias {
+		case "": // no alias
+			txt += fmt.Sprintf("  \"%s\"\n", path)
+		default:
+			txt += fmt.Sprintf("  %s \"%s\"\n", alias, path)
+		}
+	}
+	return "\nimport (\n" + txt + ")\n"
+}
+
+// Load arguments
+func loader() error {
+	errs := make([]error, 0)
+	if err := args.loadRename(renames); err != nil {
+		errs = append(errs, fmt.Errorf("load rename error: %w", err))
+	}
+
+	if err := args.loadImportPath(importPaths); err != nil {
+		errs = append(errs, fmt.Errorf("load import path error: %w", err))
+	}
+
+	if len(errs) != 0 {
+		return fmt.Errorf("%v", errs)
+	}
+
 	return nil
 }
 
@@ -99,7 +153,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Generate code
-		txt, err := generate(data)
+		txt, err := generate(data, args)
 		if err != nil {
 			return fmt.Errorf("generate error: %w", err)
 		}
@@ -144,4 +198,7 @@ func init() {
 
 	// rename
 	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "rename accessor name / e.g. --rename=Name:GetName")
+
+	// import
+	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "import path name \n e.g. --import=time \n e.g. --import=aliasTime:time")
 }

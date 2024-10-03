@@ -40,6 +40,29 @@ type User struct {
 				},
 			},
 		},
+		"ok: imported": {
+			args: args{
+				arguments: arguments{entity: "User", slice: "Users"},
+				src: `
+package user
+
+import "time"
+
+type User struct {
+	CreatedAt time.Time
+	UpdatedAt *time.Time
+}
+`,
+			},
+			want: data{
+				pkgName:   "user",
+				sliceName: "Users",
+				fields: fields{
+					{Accessor: "CreatedAts", Name: "CreatedAt", Type: "time.Time"},
+					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
+				},
+			},
+		},
 		"ok: exlucde": {
 			args: args{
 				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age"}},
