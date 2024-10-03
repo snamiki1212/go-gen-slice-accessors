@@ -3,7 +3,7 @@
 Generate accessors for each field in the slice struct.
 
 - <b>Easy Setup & Removal</b>
-- <b>Zero Package Size, Code Genration</b>
+- <b>Code Generation & Zero Package Size</b>
 
 <img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
 
@@ -89,19 +89,29 @@ Flags:
   -s, --slice string      target slice name
 ```
 
-## [Examples](./example)
+## Examples
 
-- Common case ([src](./example/user.go) / [generated code](./example/user_gen.go))
-- Exclude accessors ([src](./example/exclude.go) / [generated code](./example/exclude_gen.go))
-- Rename accessors ([src](./example/rename.go) / [generated code](./example/rename_gen.go))
-- Private accessors ([src](./example/private.go) / [generated code](./example/private_gen.go))
+Generated example Codes.
 
-## E2E
+- [Common case](./example/user_gen.go) ([source](./example/user.go))
+- [Exclude flag](./example/exclude_gen.go) ([source](./example/exclude.go))
+- [Rename flag](./example/rename_gen.go) ([source](./example/rename.go))
+- [Private field case](./example/private_gen.go) ([source](./example/private.go))
+
+## Contribution
+
+### E2E
 
 ```shell
 $ go generate ./example
 $ go run ./example
 ```
+
+## Alternatives
+
+If you like this package and would like to generate more, please refer to the following.
+
+- [go-gen-lo](https://github.com/snamiki1212/go-gen-lo): Generate samber/lo method for your struct.
 
 ## LICENSE
 
