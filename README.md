@@ -101,7 +101,7 @@ Generated example Codes.
 - [Private field case](./example/private_gen.go) ([source](./example/private.go))
 - [Exclude flag](./example/exclude_gen.go) ([source](./example/exclude.go))
 - [Rename flag](./example/rename_gen.go) ([source](./example/rename.go))
-- [Import flag](./example/imported2_gen.go) ([source](./example/imported2.go))
+- [Import flag](./example/imported_gen.go) ([source](./example/imported.go))
 
 ## Contribution
 
