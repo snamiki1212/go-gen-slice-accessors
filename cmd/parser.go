@@ -106,9 +106,16 @@ func parseExpr(x ast.Expr) string {
 		return parseChanType(tt)
 	case *ast.ArrayType:
 		return parseArrayType(tt)
+	case *ast.SelectorExpr:
+		return parseSelectorExpr(tt)
 	}
 	log.Println("parseExpr: parse error: unknown type", x)
 	return "any"
+}
+
+// Parse selector expression.
+func parseSelectorExpr(x *ast.SelectorExpr) string {
+	return fmt.Sprintf("%s.%s", parseExpr(x.X), parseIdent(x.Sel))
 }
 
 // Parse array type.
@@ -151,6 +158,8 @@ func parseStarExpr(x *ast.StarExpr) string {
 		return "*" + parseArrayType(tt)
 	case *ast.FuncType:
 		return "*" + parseFuncType(tt)
+	case *ast.SelectorExpr:
+		return "*" + parseSelectorExpr(tt)
 	default:
 		log.Println("parseStarExpr: parse error: unknown type", x)
 		return "any"
