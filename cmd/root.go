@@ -49,6 +49,7 @@ type arguments struct {
 	// Mapping field name to renamed name
 	renames map[string]string // key: field name, value: acccessor name.
 
+	// Import path name
 	importPaths []importPath
 }
 
@@ -65,6 +66,11 @@ var renames []string
 var args = arguments{
 	renames:     map[string]string{},
 	importPaths: make([]importPath, 0),
+}
+
+// HasImportPath
+func (a *arguments) HasImportPath() bool {
+	return len(a.importPaths) != 0
 }
 
 func (a *arguments) loadRename(as []string) error {
@@ -106,13 +112,13 @@ func (a *arguments) loadImportPath(sli []string) error {
 }
 
 // GenerateImportPath
-func (a *arguments) GenerateImportPath() string {
-	if len(a.importPaths) == 0 {
+func GenerateImportPath(importPaths []importPath) string {
+	if len(importPaths) == 0 {
 		return ""
 	}
 
 	var txt string
-	for _, elem := range a.importPaths {
+	for _, elem := range importPaths {
 		switch elem.alias {
 		case "": // no alias
 			txt += fmt.Sprintf("  \"%s\"\n", elem.path)

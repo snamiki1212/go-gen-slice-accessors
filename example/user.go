@@ -1,6 +1,15 @@
 package main
 
-//go:generate go run ../. --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt
+import (
+	"bytes"
+	alias_bytes "bytes"
+	"html/template"
+	alias_template "html/template"
+	"time"
+	alias_time "time"
+)
+
+//go:generate go run ../. --entity User --slice Users --input user.go --output user_gen.go --exclude=CreatedAt,UpdatedAt,Import3,ImportPtr3,ImportAlias3,ImportAliasPtr3
 type User struct {
 	// Example
 	UserID string
@@ -78,6 +87,20 @@ type User struct {
 	// Exclude
 	CreatedAt int64
 	UpdatedAt int64
+
+	// Import
+	Import1         time.Time
+	ImportPtr1      *time.Time
+	ImportAlias1    alias_time.Time
+	ImportAliasPtr1 *alias_time.Time
+	Import2         bytes.Buffer
+	ImportPtr2      *bytes.Buffer
+	ImportAlias2    alias_bytes.Buffer
+	ImportAliasPtr2 *alias_bytes.Buffer
+	Import3         template.CSS        // no import because exclude
+	ImportPtr3      *template.CSS       // no import because exclude
+	ImportAlias3    alias_template.CSS  // no import because exclude
+	ImportAliasPtr3 *alias_template.CSS // no import because exclude
 
 	// No Support
 	// InlineStruct0 struct{ Name string } // NOTE: not supported
