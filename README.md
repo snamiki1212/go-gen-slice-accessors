@@ -83,9 +83,13 @@ Flags:
   -e, --entity string     target entity name
   -x, --exclude strings   field names to exclude
   -h, --help              help for gen-slice-accessors
+  -m, --import strings    import path name
+                           e.g. --import=time
+                           e.g. --import=aliasTime:time
   -i, --input string      input file name
   -o, --output string     output file name
-  -r, --rename strings    rename accessor name / e.g. --rename=Name:GetName
+  -r, --rename strings    rename accessor name
+                           e.g. --rename=Name:GetName
   -s, --slice string      target slice name
 ```
 
