@@ -89,11 +89,11 @@ func (a *arguments) loadImportPath(sli []string) error {
 	for _, str := range sli {
 		pair := strings.Split(str, ":")
 		switch len(pair) {
-		case 1: // only path
+		case 1: // only path case
 			path := pair[0]
 			args.importPaths = append(args.importPaths, importPath{path: path})
-		case 2: // alias:path case
-			alias, path := pair[0], pair[1]
+		case 2: // path:alias case
+			path, alias := pair[0], pair[1]
 			args.importPaths = append(args.importPaths, importPath{path: path, alias: alias})
 		default:
 			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
@@ -205,5 +205,5 @@ func init() {
 	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "rename accessor name \n e.g. --rename=Name:GetName")
 
 	// import
-	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "import path name \n e.g. --import=time \n e.g. --import=aliasTime:time")
+	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
 }

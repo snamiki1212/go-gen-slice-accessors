@@ -85,7 +85,7 @@ Flags:
   -h, --help              help for gen-slice-accessors
   -m, --import strings    import path name
                            e.g. --import=time
-                           e.g. --import=aliasTime:time
+                           e.g. --import=time:aliasTime
   -i, --input string      input file name
   -o, --output string     output file name
   -r, --rename strings    rename accessor name
