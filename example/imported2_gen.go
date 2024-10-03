@@ -4,8 +4,9 @@
 package main
 
 import (
-  alias_time "time"
   "bytes"
+  alias_time "time"
+  "time"
 )
 
 // Buves
@@ -22,6 +23,15 @@ func (xs Imported2s) CreatedAts() []alias_time.Time {
 	sli := make([]alias_time.Time, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].CreatedAt)
+	}
+	return sli
+}
+
+// UpdatedAts
+func (xs Imported2s) UpdatedAts() []*time.Time {
+	sli := make([]*time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].UpdatedAt)
 	}
 	return sli
 }

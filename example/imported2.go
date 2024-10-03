@@ -2,15 +2,15 @@ package main
 
 import (
 	"bytes"
-	// "time"
+	"time"
 	alias_time "time"
 )
 
-//go:generate go run ../. --entity Imported2 --slice Imported2s --input imported2.go --output imported2_gen.go --import=alias_time:time,bytes
+//go:generate go run ../. --entity Imported2 --slice Imported2s --input imported2.go --output imported2_gen.go --import=bytes,alias_time:time,time
 type Imported2 struct {
 	Buf       bytes.Buffer
 	CreatedAt alias_time.Time
-	// UpdatedAt *time.Time
+	UpdatedAt *time.Time
 }
 
 type Imported2s []Imported2

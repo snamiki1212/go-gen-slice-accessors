@@ -29,8 +29,8 @@ func Test_generate(t *testing.T) {
 					sliceName: "Users",
 				},
 				args: arguments{
-					importPaths: map[string]string{
-						"time": "alias_time",
+					importPaths: []importPath{
+						{path: "time", alias: "alias_time"},
 					},
 				},
 			},

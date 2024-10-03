@@ -49,7 +49,12 @@ type arguments struct {
 	// Mapping field name to renamed name
 	renames map[string]string // key: field name, value: acccessor name.
 
-	importPaths map[string]string
+	importPaths []importPath
+}
+
+type importPath struct {
+	path  string
+	alias string
 }
 
 // Import path name
@@ -59,7 +64,7 @@ var renames []string
 // arguments
 var args = arguments{
 	renames:     map[string]string{},
-	importPaths: map[string]string{},
+	importPaths: make([]importPath, 0),
 }
 
 func (a *arguments) loadRename(as []string) error {
@@ -86,10 +91,10 @@ func (a *arguments) loadImportPath(sli []string) error {
 		switch len(pair) {
 		case 1: // only path
 			path := pair[0]
-			args.importPaths[path] = "" // no alias
+			args.importPaths = append(args.importPaths, importPath{path: path})
 		case 2: // alias:path case
 			alias, path := pair[0], pair[1]
-			args.importPaths[path] = alias
+			args.importPaths = append(args.importPaths, importPath{path: path, alias: alias})
 		default:
 			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
 		}
@@ -107,12 +112,12 @@ func (a *arguments) GenerateImportPath() string {
 	}
 
 	var txt string
-	for path, alias := range a.importPaths {
-		switch alias {
+	for _, elem := range a.importPaths {
+		switch elem.alias {
 		case "": // no alias
-			txt += fmt.Sprintf("  \"%s\"\n", path)
+			txt += fmt.Sprintf("  \"%s\"\n", elem.path)
 		default:
-			txt += fmt.Sprintf("  %s \"%s\"\n", alias, path)
+			txt += fmt.Sprintf("  %s \"%s\"\n", elem.alias, elem.path)
 		}
 	}
 	return "\nimport (\n" + txt + ")\n"
