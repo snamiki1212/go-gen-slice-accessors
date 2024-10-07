@@ -5,33 +5,60 @@ package main
 
 import (
   "bytes"
-  alias_time "time"
+  alias_bytes "bytes"
   "time"
 )
 
-// Buves
-func (xs Importeds) Buves() []bytes.Buffer {
+// Buf1s
+func (xs Importeds) Buf1s() []bytes.Buffer {
 	sli := make([]bytes.Buffer, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].Buf)
+		sli = append(sli, xs[i].Buf1)
 	}
 	return sli
 }
 
-// CreatedAts
-func (xs Importeds) CreatedAts() []alias_time.Time {
-	sli := make([]alias_time.Time, 0, len(xs))
+// AliasBuf1s
+func (xs Importeds) AliasBuf1s() []alias_bytes.Buffer {
+	sli := make([]alias_bytes.Buffer, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].CreatedAt)
+		sli = append(sli, xs[i].AliasBuf1)
 	}
 	return sli
 }
 
-// UpdatedAts
-func (xs Importeds) UpdatedAts() []*time.Time {
+// ValMonth1s
+func (xs Importeds) ValMonth1s() []time.Month {
+	sli := make([]time.Month, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ValMonth1)
+	}
+	return sli
+}
+
+// ValMonth2s
+func (xs Importeds) ValMonth2s() []time.Month {
+	sli := make([]time.Month, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].ValMonth2)
+	}
+	return sli
+}
+
+// PtrTime1s
+func (xs Importeds) PtrTime1s() []*time.Time {
 	sli := make([]*time.Time, 0, len(xs))
 	for i := range xs {
-		sli = append(sli, xs[i].UpdatedAt)
+		sli = append(sli, xs[i].PtrTime1)
+	}
+	return sli
+}
+
+// PtrTime2s
+func (xs Importeds) PtrTime2s() []*time.Time {
+	sli := make([]*time.Time, 0, len(xs))
+	for i := range xs {
+		sli = append(sli, xs[i].PtrTime2)
 	}
 	return sli
 }

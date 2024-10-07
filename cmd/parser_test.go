@@ -49,8 +49,9 @@ package user
 import "time"
 
 type User struct {
-	CreatedAt time.Time
-	UpdatedAt *time.Time
+	CreatedAt  time.Time
+	UpdatedAt  *time.Time
+	UpdatedAt2 *time.Time
 }
 `,
 			},
@@ -60,6 +61,7 @@ type User struct {
 				fields: fields{
 					{Accessor: "CreatedAts", Name: "CreatedAt", Type: "time.Time"},
 					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
+					{Accessor: "UpdatedAt2s", Name: "UpdatedAt2", Type: "*time.Time"},
 				},
 				importPaths: []importPath{
 					{path: "time", alias: ""},
