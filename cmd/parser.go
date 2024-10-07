@@ -33,7 +33,7 @@ func parse(args arguments, reader func(path string) (*ast.File, error)) (data, e
 		buildAccessor(newPluralizer(), args.renames)
 
 	importPaths := getImportPathFromFile(file)
-	importPaths = filterByUsingImportPath(importPaths, fs)
+	importPaths = filterByUsed(importPaths, fs)
 
 	return data{
 		fields:      fs,
@@ -66,8 +66,8 @@ func getImportPathFromFile(node *ast.File) []importPath {
 }
 
 // Filter import paths by using fields.
-func filterByUsingImportPath(imports []importPath, fs fields) []importPath {
-	ts := []string{} // Imported type name from filed type ex) time.Time -> time
+func filterByUsed(candidates []importPath, fs fields) []importPath {
+	ts := []string{} // Actucally Used type name from filed type ex) time.Time -> time
 	for _, f := range fs {
 		if strings.Contains(f.Type, ".") {
 			ts = append(ts, strings.Split(f.Type, ".")[0])
@@ -76,7 +76,7 @@ func filterByUsingImportPath(imports []importPath, fs fields) []importPath {
 
 	var res []importPath
 	for _, tn := range ts {
-		for _, imp := range imports {
+		for _, imp := range candidates {
 			switch imp.alias {
 			case "": // no alias
 				path := imp.path
@@ -94,6 +94,11 @@ func filterByUsingImportPath(imports []importPath, fs fields) []importPath {
 			}
 		}
 	}
+
+	// Uniq
+	res = slices.CompactFunc(res, func(e1, e2 importPath) bool {
+		return e1.path == e2.path && e1.alias == e2.alias
+	})
 
 	return res
 }
