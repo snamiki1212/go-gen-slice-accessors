@@ -4,10 +4,10 @@
 package main
 
 import (
-	"time"
-	alias_time "time"
 	"bytes"
 	alias_bytes "bytes"
+	"time"
+	alias_time "time"
 )
 
 // UserIDs
@@ -128,8 +128,8 @@ func (xs Users) StrSlicePtrs() [][]*string {
 }
 
 // Fn1s
-func (xs Users) Fn1s() []func() (string) {
-	sli := make([]func() (string), 0, len(xs))
+func (xs Users) Fn1s() []func() string {
+	sli := make([]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Fn1)
 	}
@@ -137,8 +137,8 @@ func (xs Users) Fn1s() []func() (string) {
 }
 
 // FnPtr1s
-func (xs Users) FnPtr1s() []*func() (string) {
-	sli := make([]*func() (string), 0, len(xs))
+func (xs Users) FnPtr1s() []*func() string {
+	sli := make([]*func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnPtr1)
 	}
@@ -146,8 +146,8 @@ func (xs Users) FnPtr1s() []*func() (string) {
 }
 
 // FnSlice1s
-func (xs Users) FnSlice1s() [][]func() (string) {
-	sli := make([][]func() (string), 0, len(xs))
+func (xs Users) FnSlice1s() [][]func() string {
+	sli := make([][]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice1)
 	}
@@ -155,8 +155,8 @@ func (xs Users) FnSlice1s() [][]func() (string) {
 }
 
 // FnSlice1Ptrs
-func (xs Users) FnSlice1Ptrs() [][]*func() (string) {
-	sli := make([][]*func() (string), 0, len(xs))
+func (xs Users) FnSlice1Ptrs() [][]*func() string {
+	sli := make([][]*func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice1Ptr)
 	}
@@ -164,8 +164,8 @@ func (xs Users) FnSlice1Ptrs() [][]*func() (string) {
 }
 
 // Fn2s
-func (xs Users) Fn2s() []func() () {
-	sli := make([]func() (), 0, len(xs))
+func (xs Users) Fn2s() []func() {
+	sli := make([]func(), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Fn2)
 	}
@@ -173,8 +173,8 @@ func (xs Users) Fn2s() []func() () {
 }
 
 // FnPtr2s
-func (xs Users) FnPtr2s() []*func() () {
-	sli := make([]*func() (), 0, len(xs))
+func (xs Users) FnPtr2s() []*func() {
+	sli := make([]*func(), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnPtr2)
 	}
@@ -182,8 +182,8 @@ func (xs Users) FnPtr2s() []*func() () {
 }
 
 // FnSlice2s
-func (xs Users) FnSlice2s() [][]func() () {
-	sli := make([][]func() (), 0, len(xs))
+func (xs Users) FnSlice2s() [][]func() {
+	sli := make([][]func(), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice2)
 	}
@@ -191,8 +191,8 @@ func (xs Users) FnSlice2s() [][]func() () {
 }
 
 // FnSlice2Ptrs
-func (xs Users) FnSlice2Ptrs() [][]*func() () {
-	sli := make([][]*func() (), 0, len(xs))
+func (xs Users) FnSlice2Ptrs() [][]*func() {
+	sli := make([][]*func(), 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice2Ptr)
 	}
@@ -200,8 +200,8 @@ func (xs Users) FnSlice2Ptrs() [][]*func() () {
 }
 
 // Fn3s
-func (xs Users) Fn3s() []func(func() (string)) (func() (int)) {
-	sli := make([]func(func() (string)) (func() (int)), 0, len(xs))
+func (xs Users) Fn3s() []func(func() string) func() int {
+	sli := make([]func(func() string) func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Fn3)
 	}
@@ -209,8 +209,8 @@ func (xs Users) Fn3s() []func(func() (string)) (func() (int)) {
 }
 
 // FnPtr3s
-func (xs Users) FnPtr3s() []*func(func() (string)) (func() (int)) {
-	sli := make([]*func(func() (string)) (func() (int)), 0, len(xs))
+func (xs Users) FnPtr3s() []*func(func() string) func() int {
+	sli := make([]*func(func() string) func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnPtr3)
 	}
@@ -218,8 +218,8 @@ func (xs Users) FnPtr3s() []*func(func() (string)) (func() (int)) {
 }
 
 // FnSlice3s
-func (xs Users) FnSlice3s() [][]func(func() (string)) (func() (int)) {
-	sli := make([][]func(func() (string)) (func() (int)), 0, len(xs))
+func (xs Users) FnSlice3s() [][]func(func() string) func() int {
+	sli := make([][]func(func() string) func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice3)
 	}
@@ -227,8 +227,8 @@ func (xs Users) FnSlice3s() [][]func(func() (string)) (func() (int)) {
 }
 
 // FnSlice3Ptrs
-func (xs Users) FnSlice3Ptrs() [][]*func(func() (string)) (func() (int)) {
-	sli := make([][]*func(func() (string)) (func() (int)), 0, len(xs))
+func (xs Users) FnSlice3Ptrs() [][]*func(func() string) func() int {
+	sli := make([][]*func(func() string) func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice3Ptr)
 	}
@@ -236,8 +236,8 @@ func (xs Users) FnSlice3Ptrs() [][]*func(func() (string)) (func() (int)) {
 }
 
 // Fn4s
-func (xs Users) Fn4s() []func(*func() (string)) (*func() (int)) {
-	sli := make([]func(*func() (string)) (*func() (int)), 0, len(xs))
+func (xs Users) Fn4s() []func(*func() string) *func() int {
+	sli := make([]func(*func() string) *func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Fn4)
 	}
@@ -245,8 +245,8 @@ func (xs Users) Fn4s() []func(*func() (string)) (*func() (int)) {
 }
 
 // FnPtr4s
-func (xs Users) FnPtr4s() []*func(*func() (string)) (*func() (int)) {
-	sli := make([]*func(*func() (string)) (*func() (int)), 0, len(xs))
+func (xs Users) FnPtr4s() []*func(*func() string) *func() int {
+	sli := make([]*func(*func() string) *func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnPtr4)
 	}
@@ -254,8 +254,8 @@ func (xs Users) FnPtr4s() []*func(*func() (string)) (*func() (int)) {
 }
 
 // FnSlice4s
-func (xs Users) FnSlice4s() [][]func(*func() (string)) (*func() (int)) {
-	sli := make([][]func(*func() (string)) (*func() (int)), 0, len(xs))
+func (xs Users) FnSlice4s() [][]func(*func() string) *func() int {
+	sli := make([][]func(*func() string) *func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice4)
 	}
@@ -263,8 +263,8 @@ func (xs Users) FnSlice4s() [][]func(*func() (string)) (*func() (int)) {
 }
 
 // FnSlice4Ptrs
-func (xs Users) FnSlice4Ptrs() [][]*func(*func() (string)) (*func() (int)) {
-	sli := make([][]*func(*func() (string)) (*func() (int)), 0, len(xs))
+func (xs Users) FnSlice4Ptrs() [][]*func(*func() string) *func() int {
+	sli := make([][]*func(*func() string) *func() int, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].FnSlice4Ptr)
 	}
@@ -380,8 +380,8 @@ func (xs Users) MapSlice1Ptrs() [][]*map[string]int {
 }
 
 // Map2s
-func (xs Users) Map2s() []map[string]func() (string) {
-	sli := make([]map[string]func() (string), 0, len(xs))
+func (xs Users) Map2s() []map[string]func() string {
+	sli := make([]map[string]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Map2)
 	}
@@ -389,8 +389,8 @@ func (xs Users) Map2s() []map[string]func() (string) {
 }
 
 // MapPtr2s
-func (xs Users) MapPtr2s() []*map[string]func() (string) {
-	sli := make([]*map[string]func() (string), 0, len(xs))
+func (xs Users) MapPtr2s() []*map[string]func() string {
+	sli := make([]*map[string]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].MapPtr2)
 	}
@@ -398,8 +398,8 @@ func (xs Users) MapPtr2s() []*map[string]func() (string) {
 }
 
 // MapSlice2s
-func (xs Users) MapSlice2s() [][]map[string]func() (string) {
-	sli := make([][]map[string]func() (string), 0, len(xs))
+func (xs Users) MapSlice2s() [][]map[string]func() string {
+	sli := make([][]map[string]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].MapSlice2)
 	}
@@ -407,8 +407,8 @@ func (xs Users) MapSlice2s() [][]map[string]func() (string) {
 }
 
 // MapSlice2Ptrs
-func (xs Users) MapSlice2Ptrs() [][]*map[string]func() (string) {
-	sli := make([][]*map[string]func() (string), 0, len(xs))
+func (xs Users) MapSlice2Ptrs() [][]*map[string]func() string {
+	sli := make([][]*map[string]func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].MapSlice2Ptr)
 	}
@@ -452,8 +452,8 @@ func (xs Users) ChanSlicePtr0s() [][]*chan int {
 }
 
 // Chan1s
-func (xs Users) Chan1s() []chan func() (string) {
-	sli := make([]chan func() (string), 0, len(xs))
+func (xs Users) Chan1s() []chan func() string {
+	sli := make([]chan func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].Chan1)
 	}
@@ -461,8 +461,8 @@ func (xs Users) Chan1s() []chan func() (string) {
 }
 
 // ChanPtr1s
-func (xs Users) ChanPtr1s() []*chan func() (string) {
-	sli := make([]*chan func() (string), 0, len(xs))
+func (xs Users) ChanPtr1s() []*chan func() string {
+	sli := make([]*chan func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].ChanPtr1)
 	}
@@ -470,8 +470,8 @@ func (xs Users) ChanPtr1s() []*chan func() (string) {
 }
 
 // ChanSlice1s
-func (xs Users) ChanSlice1s() [][]chan func() (string) {
-	sli := make([][]chan func() (string), 0, len(xs))
+func (xs Users) ChanSlice1s() [][]chan func() string {
+	sli := make([][]chan func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].ChanSlice1)
 	}
@@ -479,8 +479,8 @@ func (xs Users) ChanSlice1s() [][]chan func() (string) {
 }
 
 // ChanSlicePtr1s
-func (xs Users) ChanSlicePtr1s() [][]*chan func() (string) {
-	sli := make([][]*chan func() (string), 0, len(xs))
+func (xs Users) ChanSlicePtr1s() [][]*chan func() string {
+	sli := make([][]*chan func() string, 0, len(xs))
 	for i := range xs {
 		sli = append(sli, xs[i].ChanSlicePtr1)
 	}
