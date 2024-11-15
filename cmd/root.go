@@ -121,9 +121,9 @@ func GenerateImportPath(importPaths []importPath) string {
 	for _, elem := range importPaths {
 		switch elem.alias {
 		case "": // no alias
-			txt += fmt.Sprintf("  \"%s\"\n", elem.path)
+			txt += fmt.Sprintf("	\"%s\"\n", elem.path)
 		default:
-			txt += fmt.Sprintf("  %s \"%s\"\n", elem.alias, elem.path)
+			txt += fmt.Sprintf("	%s \"%s\"\n", elem.alias, elem.path)
 		}
 	}
 	return "\nimport (\n" + txt + ")\n"

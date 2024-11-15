@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 	"text/template"
 )
 
@@ -72,6 +73,14 @@ func generate(data data, args arguments) (string, error) {
 		}
 	}
 	txt += doc.String()
+
+	// format (go fmt)
+	btxt, err := format.Source([]byte(txt))
+	if err != nil {
+		return "", fmt.Errorf("format error: %w", err)
+	}
+
+	txt = string(btxt)
 
 	return txt, nil
 }
