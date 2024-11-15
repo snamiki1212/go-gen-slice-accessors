@@ -4,9 +4,9 @@
 package main
 
 import (
-  "bytes"
-  alias_bytes "bytes"
-  "time"
+	"bytes"
+	alias_bytes "bytes"
+	"time"
 )
 
 // Buf1s
