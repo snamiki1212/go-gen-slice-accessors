@@ -40,7 +40,7 @@ func Test_generate(t *testing.T) {
 package user
 
 import (
-  alias_time "time"
+	alias_time "time"
 )
 
 // Names
