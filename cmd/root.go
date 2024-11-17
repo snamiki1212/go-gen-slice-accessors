@@ -30,57 +30,30 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type importPath struct {
-	path  string
-	alias string
-}
-
-// Import path name
-var importPaths []string
-var renames []string
-
-// GenerateImportPath
-func GenerateImportPath(importPaths []importPath) string {
-	if len(importPaths) == 0 {
-		return ""
-	}
-
-	var txt string
-	for _, elem := range importPaths {
-		switch elem.alias {
-		case "": // no alias
-			txt += fmt.Sprintf("	\"%s\"\n", elem.path)
-		default:
-			txt += fmt.Sprintf("	%s \"%s\"\n", elem.alias, elem.path)
-		}
-	}
-	return "\nimport (\n" + txt + ")\n"
-}
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gen-slice-accessors",
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Load arguments
-		if err := Args.load(); err != nil {
+		if err := internal.Args.Load(); err != nil {
 			return fmt.Errorf("loader error: %w", err)
 		}
 
 		// Parse source code
-		data, err := parse(Args, reader)
+		data, err := internal.Parse(internal.Args, internal.Reader)
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)
 		}
 
 		// Generate code
-		txt, err := generate(data, Args)
+		txt, err := internal.Generate(data, internal.Args)
 		if err != nil {
 			return fmt.Errorf("generate error: %w", err)
 		}
 
 		// Write to output file
-		err = internal.Write(Args.output, txt)
+		err = internal.Write(internal.Args.Output, txt)
 		if err != nil {
 			return fmt.Errorf("write error: %w", err)
 		}
@@ -99,27 +72,27 @@ func Execute() {
 
 func init() {
 	// entity
-	rootCmd.Flags().StringVarP(&Args.entity, "entity", "e", "", "[required] Target entity name")
+	rootCmd.Flags().StringVarP(&internal.Args.Entity, "entity", "e", "", "[required] Target entity name")
 	_ = rootCmd.MarkFlagRequired("entity")
 
 	// slice
-	rootCmd.Flags().StringVarP(&Args.slice, "slice", "s", "", "[required] Target slice name")
+	rootCmd.Flags().StringVarP(&internal.Args.Slice, "slice", "s", "", "[required] Target slice name")
 	_ = rootCmd.MarkFlagRequired("slice")
 
 	// input
-	rootCmd.Flags().StringVarP(&Args.input, "input", "i", "", "[required] Input file name")
+	rootCmd.Flags().StringVarP(&internal.Args.Input, "input", "i", "", "[required] Input file name")
 	_ = rootCmd.MarkFlagRequired("input")
 
 	// output
-	rootCmd.Flags().StringVarP(&Args.output, "output", "o", "", "[required] Output file name")
+	rootCmd.Flags().StringVarP(&internal.Args.Output, "output", "o", "", "[required] Output file name")
 	_ = rootCmd.MarkFlagRequired("output")
 
 	// fieldNamesToExclude
-	rootCmd.Flags().StringSliceVarP(&Args.fieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
+	rootCmd.Flags().StringSliceVarP(&internal.Args.FieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
 
 	// rename
-	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
+	rootCmd.Flags().StringSliceVarP(&internal.Renames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
 
 	// import
-	rootCmd.Flags().StringSliceVarP(&importPaths, "import", "m", []string{}, "Import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
+	rootCmd.Flags().StringSliceVarP(&internal.ImportPaths, "import", "m", []string{}, "Import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
 }

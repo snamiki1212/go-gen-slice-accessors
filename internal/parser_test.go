@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"go/ast"
@@ -21,7 +21,7 @@ func Test_parser(t *testing.T) {
 	}{
 		"ok: common": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -42,7 +42,7 @@ type User struct {
 		},
 		"ok: imported": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -63,14 +63,14 @@ type User struct {
 					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
 					{Accessor: "UpdatedAt2s", Name: "UpdatedAt2", Type: "*time.Time"},
 				},
-				importPaths: []importPath{
+				importPaths: []ImportPath{
 					{path: "time", alias: ""},
 				},
 			},
 		},
 		"ok: exlucde": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age"}},
+				arguments: Arguments{Entity: "User", Slice: "Users", FieldNamesToExclude: []string{"Age"}},
 				src: `
 package user
 
@@ -90,7 +90,7 @@ type User struct {
 		},
 		"ok: rename": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, renames: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
+				arguments: Arguments{Entity: "User", Slice: "Users", FieldNamesToExclude: []string{"Age2"}, Renames: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
 				src: `
 package user
 
@@ -112,7 +112,7 @@ type User struct {
 		},
 		"ok: plural": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -135,7 +135,7 @@ type User struct {
 		},
 		"ok: callback": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -166,7 +166,7 @@ type User struct {
 		},
 		"ok: map": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -191,7 +191,7 @@ type User struct {
 		},
 		"ok: slice": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -210,7 +210,7 @@ type User struct {
 		},
 		"ok: chan": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -239,7 +239,7 @@ type User struct {
 		},
 		"ng: invalid src code: syntax error": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 package user
 
@@ -253,7 +253,7 @@ hogehoge // syntax error
 		},
 		"ng: invalid src code: not found package name": {
 			args: args{
-				arguments: Arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{Entity: "User", Slice: "Users"},
 				src: `
 // no package name
 type User struct {
@@ -265,7 +265,7 @@ type User struct {
 		},
 		"ng: invalid arguments: not found entity": {
 			args: args{
-				arguments: Arguments{entity: "INVALID_ENTITY", slice: "Users"},
+				arguments: Arguments{Entity: "INVALID_ENTITY", Slice: "Users"},
 				src: `
 package user
 type User struct {
@@ -279,7 +279,7 @@ type User struct {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			reader := newReaderFromString(tt.args.src)
-			got, err := parse(tt.args.arguments, reader)
+			got, err := Parse(tt.args.arguments, reader)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {

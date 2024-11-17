@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"fmt"
@@ -7,41 +7,68 @@ import (
 
 // arguments
 var Args = Arguments{
-	renames:     map[string]string{},
-	importPaths: make([]importPath, 0),
+	Renames:     map[string]string{},
+	ImportPaths: make([]ImportPath, 0),
+}
+
+// Import path name
+var ImportPaths []string
+var Renames []string
+
+type ImportPath struct {
+	path  string
+	alias string
+}
+
+// GenerateImportPath
+func GenerateImportPath(importPaths []ImportPath) string {
+	if len(importPaths) == 0 {
+		return ""
+	}
+
+	var txt string
+	for _, elem := range importPaths {
+		switch elem.alias {
+		case "": // no alias
+			txt += fmt.Sprintf("	\"%s\"\n", elem.path)
+		default:
+			txt += fmt.Sprintf("	%s \"%s\"\n", elem.alias, elem.path)
+		}
+	}
+	return "\nimport (\n" + txt + ")\n"
 }
 
 type Arguments struct {
-	// Target entity name
-	entity string
+	// Target Entity name
+	Entity string
 
-	// Target slice name
-	slice string
+	// Target Slice name
+	Slice string
 
 	// Input file name
-	input string
+	Input string
 
 	// Output file name
-	output string
+	Output string
 
 	// Field names to exclude
-	fieldNamesToExclude []string
+	FieldNamesToExclude []string
 
 	// Mapping field name to renamed name
-	renames map[string]string // key: field name, value: acccessor name.
+	Renames map[string]string // key: field name, value: acccessor name.
 
 	// Import path name
-	importPaths []importPath
+	ImportPaths []ImportPath
 }
 
 // Load arguments
-func (a *Arguments) load() error {
+func (a *Arguments) Load() error {
 	errs := make([]error, 0)
-	if err := a.loadRename(renames); err != nil {
+	if err := a.loadRename(Renames); err != nil {
 		errs = append(errs, fmt.Errorf("load rename error: %w", err))
 	}
 
-	if err := a.loadImportPath(importPaths); err != nil {
+	if err := a.loadImportPath(ImportPaths); err != nil {
 		errs = append(errs, fmt.Errorf("load import path error: %w", err))
 	}
 
@@ -54,7 +81,7 @@ func (a *Arguments) load() error {
 
 // HasImportPath
 func (a *Arguments) HasImportPath() bool {
-	return len(a.importPaths) != 0
+	return len(a.ImportPaths) != 0
 }
 
 func (a *Arguments) loadRename(as []string) error {
@@ -66,7 +93,7 @@ func (a *Arguments) loadRename(as []string) error {
 			continue
 		}
 		field, rename := pair[0], pair[1]
-		Args.renames[field] = rename
+		Args.Renames[field] = rename
 	}
 	if len(errs) != 0 {
 		return fmt.Errorf("%v", errs)
@@ -81,10 +108,10 @@ func (a *Arguments) loadImportPath(sli []string) error {
 		switch len(pair) {
 		case 1: // only path case
 			path := pair[0]
-			Args.importPaths = append(Args.importPaths, importPath{path: path})
+			Args.ImportPaths = append(Args.ImportPaths, ImportPath{path: path})
 		case 2: // path:alias case
 			path, alias := pair[0], pair[1]
-			Args.importPaths = append(Args.importPaths, importPath{path: path, alias: alias})
+			Args.ImportPaths = append(Args.ImportPaths, ImportPath{path: path, alias: alias})
 		default:
 			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
 		}

@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"testing"
@@ -29,7 +29,7 @@ func Test_generate(t *testing.T) {
 					sliceName: "Users",
 				},
 				args: Arguments{
-					importPaths: []importPath{
+					ImportPaths: []ImportPath{
 						{path: "time", alias: "alias_time"},
 					},
 				},
@@ -76,7 +76,7 @@ func (xs Users) Ages() []int64 {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := generate(tt.args.data, tt.args.args)
+			got, err := Generate(tt.args.data, tt.args.args)
 			if tt.wantErr {
 				assert.Error(t, err)
 				return

@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"fmt"
@@ -11,9 +11,9 @@ import (
 )
 
 // Parse sorce code to own struct.
-func parse(args Arguments, reader func(path string) (*ast.File, error)) (data, error) {
+func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, error) {
 	// Convert source code to ast
-	file, err := reader(args.input)
+	file, err := reader(args.Input)
 	if err != nil {
 		return data{}, fmt.Errorf("parse: error: %w", err)
 	}
@@ -29,8 +29,8 @@ func parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 
 	// Transform data
 	fs = fs.
-		excludeByFieldName(args.fieldNamesToExclude).
-		buildAccessor(newPluralizer(), args.renames)
+		excludeByFieldName(args.FieldNamesToExclude).
+		buildAccessor(newPluralizer(), args.Renames)
 
 	importPaths := getImportPathFromFile(file)
 	importPaths = filterByUsed(importPaths, fs)
@@ -38,13 +38,13 @@ func parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 	return data{
 		fields:      fs,
 		pkgName:     getPackageNameFromFile(file),
-		sliceName:   args.slice,
+		sliceName:   args.Slice,
 		importPaths: importPaths,
 	}, nil
 }
 
 // Read source code from file.
-func reader(path string) (*ast.File, error) {
+func Reader(path string) (*ast.File, error) {
 	fset := token.NewFileSet()
 	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }
@@ -53,20 +53,20 @@ func reader(path string) (*ast.File, error) {
 func getPackageNameFromFile(node *ast.File) string { return node.Name.Name }
 
 // Get import paths from file.
-func getImportPathFromFile(node *ast.File) []importPath {
-	var paths []importPath
+func getImportPathFromFile(node *ast.File) []ImportPath {
+	var paths []ImportPath
 	for _, imp := range node.Imports {
 		alias := ""
 		if imp.Name != nil {
 			alias = imp.Name.Name
 		}
-		paths = append(paths, importPath{path: strings.Trim(imp.Path.Value, `"`), alias: alias})
+		paths = append(paths, ImportPath{path: strings.Trim(imp.Path.Value, `"`), alias: alias})
 	}
 	return paths
 }
 
 // Filter import paths by using fields.
-func filterByUsed(candidates []importPath, fs fields) []importPath {
+func filterByUsed(candidates []ImportPath, fs fields) []ImportPath {
 	ts := []string{} // Actucally Used type name from filed type ex) time.Time -> time
 	for _, f := range fs {
 		if strings.Contains(f.Type, ".") {
@@ -74,7 +74,7 @@ func filterByUsed(candidates []importPath, fs fields) []importPath {
 		}
 	}
 
-	var res []importPath
+	var res []ImportPath
 	for _, tn := range ts {
 		for _, imp := range candidates {
 			switch imp.alias {
@@ -96,7 +96,7 @@ func filterByUsed(candidates []importPath, fs fields) []importPath {
 	}
 
 	// Uniq
-	res = slices.CompactFunc(res, func(e1, e2 importPath) bool {
+	res = slices.CompactFunc(res, func(e1, e2 ImportPath) bool {
 		return e1.path == e2.path && e1.alias == e2.alias
 	})
 
@@ -106,15 +106,15 @@ func filterByUsed(candidates []importPath, fs fields) []importPath {
 // Parse file.
 func parseFile(node *ast.File, args Arguments) ([]*ast.Field, error) {
 	// Find entity object
-	obj, ok := node.Scope.Objects[args.entity]
+	obj, ok := node.Scope.Objects[args.Entity]
 	if !ok {
-		return nil, fmt.Errorf("parseFile: entity not found: %s", args.entity)
+		return nil, fmt.Errorf("parseFile: entity not found: %s", args.Entity)
 	}
 
 	// Find entity
 	entity, ok := obj.Decl.(*ast.TypeSpec)
 	if !ok {
-		return nil, fmt.Errorf("parseFile: invalid entity: %s", args.entity)
+		return nil, fmt.Errorf("parseFile: invalid entity: %s", args.Entity)
 	}
 
 	// Find fields
@@ -133,7 +133,7 @@ type (
 		fields      fields
 		pkgName     string
 		sliceName   string
-		importPaths []importPath
+		importPaths []ImportPath
 	}
 	fields []field
 
