@@ -5,6 +5,12 @@ import (
 	"strings"
 )
 
+// arguments
+var Args = Arguments{
+	renames:     map[string]string{},
+	importPaths: make([]importPath, 0),
+}
+
 type Arguments struct {
 	// Target entity name
 	entity string
@@ -60,7 +66,7 @@ func (a *Arguments) loadRename(as []string) error {
 			continue
 		}
 		field, rename := pair[0], pair[1]
-		args.renames[field] = rename
+		Args.renames[field] = rename
 	}
 	if len(errs) != 0 {
 		return fmt.Errorf("%v", errs)
@@ -75,10 +81,10 @@ func (a *Arguments) loadImportPath(sli []string) error {
 		switch len(pair) {
 		case 1: // only path case
 			path := pair[0]
-			args.importPaths = append(args.importPaths, importPath{path: path})
+			Args.importPaths = append(Args.importPaths, importPath{path: path})
 		case 2: // path:alias case
 			path, alias := pair[0], pair[1]
-			args.importPaths = append(args.importPaths, importPath{path: path, alias: alias})
+			Args.importPaths = append(Args.importPaths, importPath{path: path, alias: alias})
 		default:
 			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
 		}

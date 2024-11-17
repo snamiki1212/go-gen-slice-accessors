@@ -39,12 +39,6 @@ type importPath struct {
 var importPaths []string
 var renames []string
 
-// arguments
-var args = Arguments{
-	renames:     map[string]string{},
-	importPaths: make([]importPath, 0),
-}
-
 // GenerateImportPath
 func GenerateImportPath(importPaths []importPath) string {
 	if len(importPaths) == 0 {
@@ -69,24 +63,24 @@ var rootCmd = &cobra.Command{
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Load arguments
-		if err := args.load(); err != nil {
+		if err := Args.load(); err != nil {
 			return fmt.Errorf("loader error: %w", err)
 		}
 
 		// Parse source code
-		data, err := parse(args, reader)
+		data, err := parse(Args, reader)
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)
 		}
 
 		// Generate code
-		txt, err := generate(data, args)
+		txt, err := generate(data, Args)
 		if err != nil {
 			return fmt.Errorf("generate error: %w", err)
 		}
 
 		// Write to output file
-		err = internal.Write(args.output, txt)
+		err = internal.Write(Args.output, txt)
 		if err != nil {
 			return fmt.Errorf("write error: %w", err)
 		}
@@ -105,23 +99,23 @@ func Execute() {
 
 func init() {
 	// entity
-	rootCmd.Flags().StringVarP(&args.entity, "entity", "e", "", "[required] Target entity name")
+	rootCmd.Flags().StringVarP(&Args.entity, "entity", "e", "", "[required] Target entity name")
 	_ = rootCmd.MarkFlagRequired("entity")
 
 	// slice
-	rootCmd.Flags().StringVarP(&args.slice, "slice", "s", "", "[required] Target slice name")
+	rootCmd.Flags().StringVarP(&Args.slice, "slice", "s", "", "[required] Target slice name")
 	_ = rootCmd.MarkFlagRequired("slice")
 
 	// input
-	rootCmd.Flags().StringVarP(&args.input, "input", "i", "", "[required] Input file name")
+	rootCmd.Flags().StringVarP(&Args.input, "input", "i", "", "[required] Input file name")
 	_ = rootCmd.MarkFlagRequired("input")
 
 	// output
-	rootCmd.Flags().StringVarP(&args.output, "output", "o", "", "[required] Output file name")
+	rootCmd.Flags().StringVarP(&Args.output, "output", "o", "", "[required] Output file name")
 	_ = rootCmd.MarkFlagRequired("output")
 
 	// fieldNamesToExclude
-	rootCmd.Flags().StringSliceVarP(&args.fieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
+	rootCmd.Flags().StringSliceVarP(&Args.fieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
 
 	// rename
 	rootCmd.Flags().StringSliceVarP(&renames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
