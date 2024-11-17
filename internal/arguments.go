@@ -5,15 +5,36 @@ import (
 	"strings"
 )
 
+type Arguments struct {
+	// Target Entity name
+	Entity string
+
+	// Target Slice name
+	Slice string
+
+	// Input file name
+	Input string
+
+	// Output file name
+	Output string
+
+	// Field names to exclude
+	FieldNamesToExclude []string
+
+	// Mapping field name to renamed name
+	Renames    map[string]string // key: field name, value: acccessor name.
+	RawRenames []string
+
+	// Import path name
+	ImportPaths    []ImportPath
+	RawImportPaths []string
+}
+
 // arguments
 var Args = Arguments{
 	Renames:     map[string]string{},
 	ImportPaths: make([]ImportPath, 0),
 }
-
-// Import path name
-var RawImportPaths []string
-var RawRenames []string
 
 type ImportPath struct {
 	path  string
@@ -38,37 +59,14 @@ func GenerateImportPath(importPaths []ImportPath) string {
 	return "\nimport (\n" + txt + ")\n"
 }
 
-type Arguments struct {
-	// Target Entity name
-	Entity string
-
-	// Target Slice name
-	Slice string
-
-	// Input file name
-	Input string
-
-	// Output file name
-	Output string
-
-	// Field names to exclude
-	FieldNamesToExclude []string
-
-	// Mapping field name to renamed name
-	Renames map[string]string // key: field name, value: acccessor name.
-
-	// Import path name
-	ImportPaths []ImportPath
-}
-
 // Load arguments
 func (a *Arguments) Load() error {
 	errs := make([]error, 0)
-	if err := a.loadRename(RawRenames); err != nil {
+	if err := a.loadRename(Args.RawRenames); err != nil {
 		errs = append(errs, fmt.Errorf("load rename error: %w", err))
 	}
 
-	if err := a.loadImportPath(RawImportPaths); err != nil {
+	if err := a.loadImportPath(Args.RawImportPaths); err != nil {
 		errs = append(errs, fmt.Errorf("load import path error: %w", err))
 	}
 
