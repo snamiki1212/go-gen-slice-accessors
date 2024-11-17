@@ -91,8 +91,8 @@ func init() {
 	rootCmd.Flags().StringSliceVarP(&internal.Args.FieldNamesToExclude, "exclude", "x", []string{}, "Field names to exclude")
 
 	// rename
-	rootCmd.Flags().StringSliceVarP(&internal.Renames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
+	rootCmd.Flags().StringSliceVarP(&internal.RawRenames, "rename", "r", []string{}, "Rename accessor name \n e.g. --rename=Name:GetName")
 
 	// import
-	rootCmd.Flags().StringSliceVarP(&internal.ImportPaths, "import", "m", []string{}, "Import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
+	rootCmd.Flags().StringSliceVarP(&internal.RawImportPaths, "import", "m", []string{}, "Import path name \n e.g. --import=time \n e.g. --import=time:aliasTime")
 }

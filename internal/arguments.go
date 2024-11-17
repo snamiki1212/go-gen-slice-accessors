@@ -12,8 +12,8 @@ var Args = Arguments{
 }
 
 // Import path name
-var ImportPaths []string
-var Renames []string
+var RawImportPaths []string
+var RawRenames []string
 
 type ImportPath struct {
 	path  string
@@ -64,11 +64,11 @@ type Arguments struct {
 // Load arguments
 func (a *Arguments) Load() error {
 	errs := make([]error, 0)
-	if err := a.loadRename(Renames); err != nil {
+	if err := a.loadRename(RawRenames); err != nil {
 		errs = append(errs, fmt.Errorf("load rename error: %w", err))
 	}
 
-	if err := a.loadImportPath(ImportPaths); err != nil {
+	if err := a.loadImportPath(RawImportPaths); err != nil {
 		errs = append(errs, fmt.Errorf("load import path error: %w", err))
 	}
 
