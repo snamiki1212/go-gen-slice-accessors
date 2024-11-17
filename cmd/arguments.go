@@ -29,13 +29,13 @@ type Arguments struct {
 }
 
 // Load arguments
-func loader() error {
+func (a *Arguments) load() error {
 	errs := make([]error, 0)
-	if err := args.loadRename(renames); err != nil {
+	if err := a.loadRename(renames); err != nil {
 		errs = append(errs, fmt.Errorf("load rename error: %w", err))
 	}
 
-	if err := args.loadImportPath(importPaths); err != nil {
+	if err := a.loadImportPath(importPaths); err != nil {
 		errs = append(errs, fmt.Errorf("load import path error: %w", err))
 	}
 

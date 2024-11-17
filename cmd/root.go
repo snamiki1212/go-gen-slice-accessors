@@ -69,7 +69,7 @@ var rootCmd = &cobra.Command{
 	Short: "Generate accessors for each field in the slice struct.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Load arguments
-		if err := loader(); err != nil {
+		if err := args.load(); err != nil {
 			return fmt.Errorf("loader error: %w", err)
 		}
 
