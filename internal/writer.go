@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 // Write to output file
-func write(path, txt string) error {
+func Write(path, txt string) error {
 	if txt == "" { // skip to create file because of empty
 		return nil
 	}

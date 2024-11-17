@@ -1,4 +1,4 @@
-package cmd
+package internal
 
 import (
 	"bytes"
@@ -27,7 +27,7 @@ type templateMapper struct {
 }
 
 // Generate code
-func generate(data data, args arguments) (string, error) {
+func Generate(data data, args Arguments) (string, error) {
 	pkgName := data.pkgName
 	sliceName := data.sliceName
 	infos := data.fields
@@ -44,9 +44,9 @@ func generate(data data, args arguments) (string, error) {
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
 	txt += func() string {
-		var paths []importPath
+		var paths []ImportPath
 		if args.HasImportPath() {
-			paths = args.importPaths
+			paths = args.ImportPaths
 		} else {
 			paths = data.importPaths
 		}
