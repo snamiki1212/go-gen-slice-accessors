@@ -11,7 +11,7 @@ import (
 )
 
 // Parse sorce code to own struct.
-func parse(args arguments, reader func(path string) (*ast.File, error)) (data, error) {
+func parse(args Arguments, reader func(path string) (*ast.File, error)) (data, error) {
 	// Convert source code to ast
 	file, err := reader(args.input)
 	if err != nil {
@@ -104,7 +104,7 @@ func filterByUsed(candidates []importPath, fs fields) []importPath {
 }
 
 // Parse file.
-func parseFile(node *ast.File, args arguments) ([]*ast.Field, error) {
+func parseFile(node *ast.File, args Arguments) ([]*ast.Field, error) {
 	// Find entity object
 	obj, ok := node.Scope.Objects[args.entity]
 	if !ok {

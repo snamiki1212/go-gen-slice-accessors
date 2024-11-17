@@ -9,7 +9,7 @@ import (
 func Test_generate(t *testing.T) {
 	type args struct {
 		data data
-		args arguments
+		args Arguments
 	}
 	tests := []struct {
 		name    string
@@ -28,7 +28,7 @@ func Test_generate(t *testing.T) {
 					pkgName:   "user",
 					sliceName: "Users",
 				},
-				args: arguments{
+				args: Arguments{
 					importPaths: []importPath{
 						{path: "time", alias: "alias_time"},
 					},

@@ -31,7 +31,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type arguments struct {
+type Arguments struct {
 	// Target entity name
 	entity string
 
@@ -64,17 +64,17 @@ var importPaths []string
 var renames []string
 
 // arguments
-var args = arguments{
+var args = Arguments{
 	renames:     map[string]string{},
 	importPaths: make([]importPath, 0),
 }
 
 // HasImportPath
-func (a *arguments) HasImportPath() bool {
+func (a *Arguments) HasImportPath() bool {
 	return len(a.importPaths) != 0
 }
 
-func (a *arguments) loadRename(as []string) error {
+func (a *Arguments) loadRename(as []string) error {
 	errs := make([]error, 0)
 	for _, ac := range as {
 		pair := strings.Split(ac, ":")
@@ -91,7 +91,7 @@ func (a *arguments) loadRename(as []string) error {
 	return nil
 }
 
-func (a *arguments) loadImportPath(sli []string) error {
+func (a *Arguments) loadImportPath(sli []string) error {
 	errs := make([]error, 0)
 	for _, str := range sli {
 		pair := strings.Split(str, ":")

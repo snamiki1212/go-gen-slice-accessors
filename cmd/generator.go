@@ -27,7 +27,7 @@ type templateMapper struct {
 }
 
 // Generate code
-func generate(data data, args arguments) (string, error) {
+func generate(data data, args Arguments) (string, error) {
 	pkgName := data.pkgName
 	sliceName := data.sliceName
 	infos := data.fields

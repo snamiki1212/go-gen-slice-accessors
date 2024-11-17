@@ -12,7 +12,7 @@ import (
 func Test_parser(t *testing.T) {
 	type args struct {
 		src       string
-		arguments arguments
+		arguments Arguments
 	}
 	tests := map[string]struct {
 		args    args
@@ -21,7 +21,7 @@ func Test_parser(t *testing.T) {
 	}{
 		"ok: common": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -42,7 +42,7 @@ type User struct {
 		},
 		"ok: imported": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -70,7 +70,7 @@ type User struct {
 		},
 		"ok: exlucde": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age"}},
+				arguments: Arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age"}},
 				src: `
 package user
 
@@ -90,7 +90,7 @@ type User struct {
 		},
 		"ok: rename": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, renames: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
+				arguments: Arguments{entity: "User", slice: "Users", fieldNamesToExclude: []string{"Age2"}, renames: map[string]string{"Age": "AgeList", "Age2": "Age2List"}},
 				src: `
 package user
 
@@ -112,7 +112,7 @@ type User struct {
 		},
 		"ok: plural": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -135,7 +135,7 @@ type User struct {
 		},
 		"ok: callback": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -166,7 +166,7 @@ type User struct {
 		},
 		"ok: map": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -191,7 +191,7 @@ type User struct {
 		},
 		"ok: slice": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -210,7 +210,7 @@ type User struct {
 		},
 		"ok: chan": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -239,7 +239,7 @@ type User struct {
 		},
 		"ng: invalid src code: syntax error": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 package user
 
@@ -253,7 +253,7 @@ hogehoge // syntax error
 		},
 		"ng: invalid src code: not found package name": {
 			args: args{
-				arguments: arguments{entity: "User", slice: "Users"},
+				arguments: Arguments{entity: "User", slice: "Users"},
 				src: `
 // no package name
 type User struct {
@@ -265,7 +265,7 @@ type User struct {
 		},
 		"ng: invalid arguments: not found entity": {
 			args: args{
-				arguments: arguments{entity: "INVALID_ENTITY", slice: "Users"},
+				arguments: Arguments{entity: "INVALID_ENTITY", slice: "Users"},
 				src: `
 package user
 type User struct {
