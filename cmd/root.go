@@ -41,13 +41,13 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Parse source code
-		data, err := internal.Parse(internal.Args, internal.Reader)
+		generator, err := internal.Parse(internal.Args, internal.Reader)
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)
 		}
 
 		// Generate code
-		txt, err := internal.Generate(data)
+		txt, err := generator.Generate()
 		if err != nil {
 			return fmt.Errorf("generate error: %w", err)
 		}

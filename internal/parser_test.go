@@ -16,7 +16,7 @@ func Test_parser(t *testing.T) {
 	}
 	tests := map[string]struct {
 		args    args
-		want    data
+		want    Generator
 		wantErr bool
 	}{
 		"ok: common": {
@@ -31,7 +31,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -55,7 +55,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -80,7 +80,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -101,7 +101,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -123,7 +123,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -150,7 +150,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -178,7 +178,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -200,7 +200,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{
@@ -224,7 +224,7 @@ type User struct {
 }
 `,
 			},
-			want: data{
+			want: Generator{
 				pkgName:   "user",
 				sliceName: "Users",
 				fields: fields{

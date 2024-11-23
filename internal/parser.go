@@ -11,17 +11,17 @@ import (
 )
 
 // Parse sorce code to own struct.
-func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, error) {
+func Parse(args Arguments, reader func(path string) (*ast.File, error)) (Generator, error) {
 	// Convert source code to ast
 	file, err := reader(args.Input)
 	if err != nil {
-		return data{}, fmt.Errorf("parse: error: %w", err)
+		return Generator{}, fmt.Errorf("parse: error: %w", err)
 	}
 
 	// Parse ast
 	fields, err := parseFile(file, args)
 	if err != nil {
-		return data{}, err
+		return Generator{}, err
 	}
 
 	// Convert ast to own struct
@@ -41,7 +41,7 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 		return filterByUsed(paths, fs)
 	}()
 
-	return data{
+	return Generator{
 		fields:      fs,
 		pkgName:     getPackageNameFromFile(file),
 		sliceName:   args.Slice,
@@ -134,13 +134,6 @@ func parseFile(node *ast.File, args Arguments) ([]*ast.Field, error) {
 }
 
 type (
-	// Data from parsed source code and will be used in code generation.
-	data struct {
-		fields      fields
-		pkgName     string
-		sliceName   string
-		importPaths ImportPaths
-	}
 	fields []field
 
 	// Struct field from entity in source code.
