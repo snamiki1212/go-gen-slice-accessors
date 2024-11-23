@@ -37,7 +37,7 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 	if args.HasImportPath() {
 		paths = args.ImportPaths
 	} else {
-		importPaths := getImportPathFromFile(file)
+		importPaths := newImportPathFromFile(file)
 		importPaths = filterByUsed(importPaths, fs)
 		paths = importPaths
 	}
@@ -59,8 +59,8 @@ func Reader(path string) (*ast.File, error) {
 // Get package name.
 func getPackageNameFromFile(node *ast.File) string { return node.Name.Name }
 
-// Get import paths from file.
-func getImportPathFromFile(node *ast.File) []ImportPath {
+// New import paths from file.
+func newImportPathFromFile(node *ast.File) ImportPaths {
 	var paths []ImportPath
 	for _, imp := range node.Imports {
 		alias := ""
@@ -140,7 +140,7 @@ type (
 		fields      fields
 		pkgName     string
 		sliceName   string
-		importPaths []ImportPath
+		importPaths ImportPaths
 	}
 	fields []field
 

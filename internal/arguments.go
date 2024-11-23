@@ -40,15 +40,16 @@ type ImportPath struct {
 	path  string
 	alias string
 }
+type ImportPaths []ImportPath
 
-// GenerateImportPath
-func GenerateImportPath(importPaths []ImportPath) string {
-	if len(importPaths) == 0 {
+// Display import paths
+func (is ImportPaths) Display() string {
+	if len(is) == 0 {
 		return ""
 	}
 
 	var txt string
-	for _, elem := range importPaths {
+	for _, elem := range is {
 		switch elem.alias {
 		case "": // no alias
 			txt += fmt.Sprintf("	\"%s\"\n", elem.path)
