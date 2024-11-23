@@ -9,7 +9,6 @@ import (
 func Test_generate(t *testing.T) {
 	type args struct {
 		data data
-		args Arguments
 	}
 	tests := []struct {
 		name    string
@@ -27,9 +26,7 @@ func Test_generate(t *testing.T) {
 					},
 					pkgName:   "user",
 					sliceName: "Users",
-				},
-				args: Arguments{
-					ImportPaths: []ImportPath{
+					importPaths: []ImportPath{
 						{path: "time", alias: "alias_time"},
 					},
 				},
@@ -76,7 +73,7 @@ func (xs Users) Ages() []int64 {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Generate(tt.args.data, tt.args.args)
+			got, err := Generate(tt.args.data)
 			if tt.wantErr {
 				assert.Error(t, err)
 				return
