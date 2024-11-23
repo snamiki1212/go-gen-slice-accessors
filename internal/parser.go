@@ -10,12 +10,21 @@ import (
 	"strings"
 )
 
+type Reader func(path string) (*ast.File, error)
+type Parser struct {
+	reader Reader
+}
+
+func NewParser(reader Reader) *Parser {
+	return &Parser{reader: reader}
+}
+
 // Parse
 //
 // Parse sorce code and new generator.
-func Parse(args Arguments, reader func(path string) (*ast.File, error)) (Generator, error) {
+func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Convert source code to ast
-	file, err := reader(args.Input)
+	file, err := p.reader(args.Input)
 	if err != nil {
 		return Generator{}, fmt.Errorf("parse: error: %w", err)
 	}
@@ -52,7 +61,7 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (Generat
 }
 
 // Read source code from file.
-func Reader(path string) (*ast.File, error) {
+func Readr(path string) (*ast.File, error) {
 	fset := token.NewFileSet()
 	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }

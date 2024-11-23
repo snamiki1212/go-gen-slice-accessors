@@ -279,7 +279,8 @@ type User struct {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			reader := newReaderFromString(tt.args.src)
-			got, err := Parse(tt.args.arguments, reader)
+			parser := NewParser(reader)
+			got, err := parser.Parse(tt.args.arguments)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
