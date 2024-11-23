@@ -32,14 +32,21 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 		excludeByFieldName(args.FieldNamesToExclude).
 		buildAccessor(newPluralizer(), args.Renames)
 
-	importPaths := getImportPathFromFile(file)
-	importPaths = filterByUsed(importPaths, fs)
+	// Parse paths
+	var paths []ImportPath
+	if args.HasImportPath() {
+		paths = args.ImportPaths
+	} else {
+		importPaths := getImportPathFromFile(file)
+		importPaths = filterByUsed(importPaths, fs)
+		paths = importPaths
+	}
 
 	return data{
 		fields:      fs,
 		pkgName:     getPackageNameFromFile(file),
 		sliceName:   args.Slice,
-		importPaths: importPaths,
+		importPaths: paths,
 	}, nil
 }
 
