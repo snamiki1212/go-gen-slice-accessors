@@ -8,8 +8,7 @@ import (
 
 func Test_generate(t *testing.T) {
 	type args struct {
-		data data
-		args Arguments
+		generator Generator
 	}
 	tests := []struct {
 		name    string
@@ -20,16 +19,14 @@ func Test_generate(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				data: data{
+				generator: Generator{
 					fields: fields{
 						{Accessor: "Names", Name: "Name", Type: "string"},
 						{Accessor: "Ages", Name: "Age", Type: "int64"},
 					},
 					pkgName:   "user",
 					sliceName: "Users",
-				},
-				args: Arguments{
-					ImportPaths: []ImportPath{
+					importPaths: []ImportPath{
 						{path: "time", alias: "alias_time"},
 					},
 				},
@@ -65,7 +62,7 @@ func (xs Users) Ages() []int64 {
 		{
 			name: "ok: empty",
 			args: args{
-				data: data{
+				generator: Generator{
 					fields:    fields{},
 					pkgName:   "user",
 					sliceName: "Users",
@@ -76,7 +73,7 @@ func (xs Users) Ages() []int64 {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Generate(tt.args.data, tt.args.args)
+			got, err := tt.args.generator.Generate()
 			if tt.wantErr {
 				assert.Error(t, err)
 				return

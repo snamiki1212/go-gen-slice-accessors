@@ -10,18 +10,29 @@ import (
 	"strings"
 )
 
-// Parse sorce code to own struct.
-func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, error) {
+type Reader func(path string) (*ast.File, error)
+type Parser struct {
+	reader Reader
+}
+
+func NewParser(reader Reader) *Parser {
+	return &Parser{reader: reader}
+}
+
+// Parse
+//
+// Parse sorce code and new generator.
+func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Convert source code to ast
-	file, err := reader(args.Input)
+	file, err := p.reader(args.Input)
 	if err != nil {
-		return data{}, fmt.Errorf("parse: error: %w", err)
+		return Generator{}, fmt.Errorf("parse: error: %w", err)
 	}
 
 	// Parse ast
 	fields, err := parseFile(file, args)
 	if err != nil {
-		return data{}, err
+		return Generator{}, err
 	}
 
 	// Convert ast to own struct
@@ -32,19 +43,25 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 		excludeByFieldName(args.FieldNamesToExclude).
 		buildAccessor(newPluralizer(), args.Renames)
 
-	importPaths := getImportPathFromFile(file)
-	importPaths = filterByUsed(importPaths, fs)
+	// Parse paths
+	paths := func() ImportPaths {
+		if args.HasImportPath() {
+			return args.ImportPaths
+		}
+		paths := newImportPathsFromFile(file)
+		return filterByUsed(paths, fs)
+	}()
 
-	return data{
+	return Generator{
 		fields:      fs,
 		pkgName:     getPackageNameFromFile(file),
 		sliceName:   args.Slice,
-		importPaths: importPaths,
+		importPaths: paths,
 	}, nil
 }
 
 // Read source code from file.
-func Reader(path string) (*ast.File, error) {
+func Read(path string) (*ast.File, error) {
 	fset := token.NewFileSet()
 	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }
@@ -52,8 +69,8 @@ func Reader(path string) (*ast.File, error) {
 // Get package name.
 func getPackageNameFromFile(node *ast.File) string { return node.Name.Name }
 
-// Get import paths from file.
-func getImportPathFromFile(node *ast.File) []ImportPath {
+// New import paths from file.
+func newImportPathsFromFile(node *ast.File) ImportPaths {
 	var paths []ImportPath
 	for _, imp := range node.Imports {
 		alias := ""
@@ -128,13 +145,6 @@ func parseFile(node *ast.File, args Arguments) ([]*ast.Field, error) {
 }
 
 type (
-	// Data from parsed source code and will be used in code generation.
-	data struct {
-		fields      fields
-		pkgName     string
-		sliceName   string
-		importPaths []ImportPath
-	}
 	fields []field
 
 	// Struct field from entity in source code.

@@ -7,6 +7,14 @@ import (
 	"text/template"
 )
 
+// Generator: code generation struct
+type Generator struct {
+	fields      fields
+	pkgName     string
+	sliceName   string
+	importPaths ImportPaths
+}
+
 const templateBody = `
 // {{ .Method }}
 func (xs {{ .Slice }}) {{ .Method }}() []{{ .Type }} {
@@ -27,10 +35,10 @@ type templateMapper struct {
 }
 
 // Generate code
-func Generate(data data, args Arguments) (string, error) {
-	pkgName := data.pkgName
-	sliceName := data.sliceName
-	infos := data.fields
+func (g Generator) Generate() (string, error) {
+	pkgName := g.pkgName
+	sliceName := g.sliceName
+	infos := g.fields
 
 	if len(infos) == 0 {
 		return "", nil
@@ -43,15 +51,7 @@ func Generate(data data, args Arguments) (string, error) {
 	txt += "// Based on information from https://github.com/snamiki1212/go-gen-slice-accessors\n"
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
-	txt += func() string {
-		var paths []ImportPath
-		if args.HasImportPath() {
-			paths = args.ImportPaths
-		} else {
-			paths = data.importPaths
-		}
-		return GenerateImportPath(paths)
-	}()
+	txt += g.importPaths.Display()
 
 	// append templates
 	var doc bytes.Buffer
