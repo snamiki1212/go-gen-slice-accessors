@@ -61,7 +61,7 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 }
 
 // Read source code from file.
-func Readr(path string) (*ast.File, error) {
+func Read(path string) (*ast.File, error) {
 	fset := token.NewFileSet()
 	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }
