@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-// Data from parsed source code and will be used in code generation.
+// Generator: code generation struct
 type Generator struct {
 	fields      fields
 	pkgName     string

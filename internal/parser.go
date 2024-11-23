@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-// Parse sorce code to own struct.
+// Parse
+//
+// Parse sorce code and new generator.
 func Parse(args Arguments, reader func(path string) (*ast.File, error)) (Generator, error) {
 	// Convert source code to ast
 	file, err := reader(args.Input)
