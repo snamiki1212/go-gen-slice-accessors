@@ -33,13 +33,13 @@ func Parse(args Arguments, reader func(path string) (*ast.File, error)) (data, e
 		buildAccessor(newPluralizer(), args.Renames)
 
 	// Parse paths
-	var paths []ImportPath
-	if args.HasImportPath() {
-		paths = args.ImportPaths
-	} else {
+	paths := func() ImportPaths {
+		if args.HasImportPath() {
+			return args.ImportPaths
+		}
 		paths := newImportPathsFromFile(file)
-		paths = filterByUsed(paths, fs)
-	}
+		return filterByUsed(paths, fs)
+	}()
 
 	return data{
 		fields:      fs,
