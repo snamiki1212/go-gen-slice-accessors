@@ -26,7 +26,7 @@ func Test_generate(t *testing.T) {
 					},
 					pkgName:   "user",
 					sliceName: "Users",
-					importPaths: []ImportPath{
+					importPaths: ImportPaths{
 						{path: "time", alias: "alias_time"},
 					},
 				},

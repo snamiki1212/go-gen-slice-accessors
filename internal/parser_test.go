@@ -64,7 +64,7 @@ type User struct {
 					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
 					{Accessor: "UpdatedAt2s", Name: "UpdatedAt2", Type: "*time.Time"},
 				},
-				importPaths: []ImportPath{
+				importPaths: ImportPaths{
 					{path: "time", alias: ""},
 				},
 			},

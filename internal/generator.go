@@ -12,7 +12,11 @@ type Generator struct {
 	fields      fields
 	pkgName     string
 	sliceName   string
-	importPaths ImportPaths
+	importPaths IImportPaths
+}
+
+type IImportPaths interface {
+	Display() string
 }
 
 const templateBody = `
