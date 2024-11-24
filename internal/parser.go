@@ -3,8 +3,6 @@ package internal
 import (
 	"fmt"
 	"go/ast"
-	"go/parser"
-	"go/token"
 	"log"
 	"slices"
 	"strings"
@@ -18,8 +16,6 @@ type Parser struct {
 type IPluralizer interface {
 	Pluralize(str string) string
 }
-
-type Reader func(path string) (*ast.File, error)
 
 func NewParser(reader Reader, pluralizer IPluralizer) *Parser {
 	return &Parser{reader: reader, pluralizer: pluralizer}
@@ -64,12 +60,6 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 		sliceName:   args.Slice,
 		importPaths: paths,
 	}, nil
-}
-
-// Read source code from file.
-func Read(path string) (*ast.File, error) {
-	fset := token.NewFileSet()
-	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }
 
 // Get package name.
