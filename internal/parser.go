@@ -3,20 +3,26 @@ package internal
 import (
 	"fmt"
 	"go/ast"
-	"go/parser"
-	"go/token"
 	"log"
 	"slices"
 	"strings"
 )
 
-type Reader func(path string) (*ast.File, error)
 type Parser struct {
-	reader Reader
+	reader     IReader
+	pluralizer IPluralizer
 }
 
-func NewParser(reader Reader) *Parser {
-	return &Parser{reader: reader}
+type IPluralizer interface {
+	Pluralize(str string) string
+}
+
+type IReader interface {
+	Read() (*ast.File, error)
+}
+
+func NewParser(reader IReader, pluralizer IPluralizer) *Parser {
+	return &Parser{reader: reader, pluralizer: pluralizer}
 }
 
 // Parse
@@ -24,7 +30,7 @@ func NewParser(reader Reader) *Parser {
 // Parse sorce code and new generator.
 func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Convert source code to ast
-	file, err := p.reader(args.Input)
+	file, err := p.reader.Read()
 	if err != nil {
 		return Generator{}, fmt.Errorf("parse: error: %w", err)
 	}
@@ -41,7 +47,7 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Transform data
 	fs = fs.
 		excludeByFieldName(args.FieldNamesToExclude).
-		buildAccessor(newPluralizer(), args.Renames)
+		buildAccessor(p.pluralizer, args.Renames)
 
 	// Parse paths
 	paths := func() ImportPaths {
@@ -58,12 +64,6 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 		sliceName:   args.Slice,
 		importPaths: paths,
 	}, nil
-}
-
-// Read source code from file.
-func Read(path string) (*ast.File, error) {
-	fset := token.NewFileSet()
-	return parser.ParseFile(fset, path, nil, parser.AllErrors)
 }
 
 // Get package name.
@@ -313,18 +313,18 @@ func (f field) display() string {
 }
 
 // Build accessor name.
-func (f *field) buildAccessor(p pluralizer, rule map[string]string) *field {
+func (f *field) buildAccessor(p IPluralizer, rule map[string]string) *field {
 	if ac, ok := rule[f.Name]; ok {
 		f.Accessor = ac
 		return f
 	}
 
-	f.Accessor = p.pluralize(f.Name)
+	f.Accessor = p.Pluralize(f.Name)
 	return f
 }
 
 // Build accessor names.
-func (fs fields) buildAccessor(p pluralizer, rule map[string]string) fields {
+func (fs fields) buildAccessor(p IPluralizer, rule map[string]string) fields {
 	for i := range fs {
 		fs[i].buildAccessor(p, rule)
 	}

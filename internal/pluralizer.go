@@ -2,7 +2,7 @@ package internal
 
 import "regexp"
 
-type pluralizer struct {
+type Pluralizer struct {
 	rules pluralizeRules
 }
 
@@ -32,7 +32,7 @@ func (s strRule) toPluralizeRule() pluralizeRule {
 	return pluralizeRule{newRegexpRule(s.expr), s.rep}
 }
 
-func (p pluralizer) replace(word string, rules []pluralizeRule) string {
+func (p Pluralizer) replace(word string, rules []pluralizeRule) string {
 	// reverse order
 	for i := len(rules) - 1; i >= 0; i-- {
 		if rules[i].expression.MatchString(word) {
@@ -42,7 +42,7 @@ func (p pluralizer) replace(word string, rules []pluralizeRule) string {
 	return word
 }
 
-func (p pluralizer) doReplace(word string, rule pluralizeRule) string {
+func (p Pluralizer) doReplace(word string, rule pluralizeRule) string {
 	return rule.expression.ReplaceAllString(word, rule.replacement)
 }
 
@@ -72,16 +72,16 @@ func newRegexpRule(rule string) *regexp.Regexp {
 	return regexp.MustCompile(rl)
 }
 
-func newPluralizer(rulesList ...strRules) pluralizer {
+func NewPluralizer(rulesList ...strRules) Pluralizer {
 	rules := make(strRules, 0)
 	if len(rulesList) > 0 {
 		rs := rulesList[0] // only get the first elements
 		rules = append(rules, rs...)
 	}
 	rules = append(rules, newDefaultStrRules()...)
-	return pluralizer{rules.toPluralizeRules()}
+	return Pluralizer{rules.toPluralizeRules()}
 }
 
-func (p pluralizer) pluralize(str string) string {
+func (p Pluralizer) Pluralize(str string) string {
 	return p.replace(str, p.rules)
 }
