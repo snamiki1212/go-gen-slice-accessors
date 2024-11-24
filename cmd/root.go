@@ -42,7 +42,7 @@ var rootCmd = &cobra.Command{
 
 		// Parse source code
 		generator, err := internal.
-			NewParser(internal.Read, internal.NewPluralizer()).
+			NewParser(internal.NewReader(internal.Args.Input), internal.NewPluralizer()).
 			Parse(internal.Args)
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)

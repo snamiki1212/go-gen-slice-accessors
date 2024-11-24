@@ -6,10 +6,16 @@ import (
 	"go/token"
 )
 
-type Reader func(path string) (*ast.File, error)
+type Reader struct {
+	path string
+}
+
+func NewReader(path string) *Reader {
+	return &Reader{path: path}
+}
 
 // Read source code from file.
-func Read(path string) (*ast.File, error) {
+func (r Reader) Read() (*ast.File, error) {
 	fset := token.NewFileSet()
-	return parser.ParseFile(fset, path, nil, parser.AllErrors)
+	return parser.ParseFile(fset, r.path, nil, parser.AllErrors)
 }

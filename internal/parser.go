@@ -9,7 +9,7 @@ import (
 )
 
 type Parser struct {
-	reader     Reader
+	reader     IReader
 	pluralizer IPluralizer
 }
 
@@ -17,7 +17,11 @@ type IPluralizer interface {
 	Pluralize(str string) string
 }
 
-func NewParser(reader Reader, pluralizer IPluralizer) *Parser {
+type IReader interface {
+	Read() (*ast.File, error)
+}
+
+func NewParser(reader IReader, pluralizer IPluralizer) *Parser {
 	return &Parser{reader: reader, pluralizer: pluralizer}
 }
 
@@ -26,7 +30,7 @@ func NewParser(reader Reader, pluralizer IPluralizer) *Parser {
 // Parse sorce code and new generator.
 func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Convert source code to ast
-	file, err := p.reader(args.Input)
+	file, err := p.reader.Read()
 	if err != nil {
 		return Generator{}, fmt.Errorf("parse: error: %w", err)
 	}

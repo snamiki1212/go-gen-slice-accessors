@@ -278,7 +278,8 @@ type User struct {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			reader := newReaderFromString(tt.args.src)
+			reader := NewReaderFromString(tt.args.src)
+			// reader := newReaderFromString(tt.args.src)
 			parser := NewParser(reader, NewPluralizer())
 			got, err := parser.Parse(tt.args.arguments)
 			if tt.wantErr {
@@ -292,10 +293,16 @@ type User struct {
 }
 
 // Construct reader from string.
-func newReaderFromString(src string) func(path string) (*ast.File, error) {
-	return func(path string) (*ast.File, error) {
-		fset := token.NewFileSet()
-		noFilePath := "" // not import from file path
-		return parser.ParseFile(fset, noFilePath, src, parser.AllErrors)
-	}
+type ReaderFromString struct {
+	src string
+}
+
+func NewReaderFromString(src string) ReaderFromString {
+	return ReaderFromString{src: src}
+}
+
+func (r ReaderFromString) Read() (*ast.File, error) {
+	fset := token.NewFileSet()
+	noFilePath := "" // not import from file path
+	return parser.ParseFile(fset, noFilePath, r.src, parser.AllErrors)
 }
