@@ -82,6 +82,6 @@ func NewPluralizer(rulesList ...strRules) Pluralizer {
 	return Pluralizer{rules.toPluralizeRules()}
 }
 
-func (p Pluralizer) pluralize(str string) string {
+func (p Pluralizer) Pluralize(str string) string {
 	return p.replace(str, p.rules)
 }

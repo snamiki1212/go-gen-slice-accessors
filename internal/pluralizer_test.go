@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_pluralizer_pluralize(t *testing.T) {
+func Test_Pluralizer_Pluralize(t *testing.T) {
 	tests := map[string]struct {
 		recv Pluralizer
 		arg  string
@@ -27,7 +27,7 @@ func Test_pluralizer_pluralize(t *testing.T) {
 	}
 	for tn, tt := range tests {
 		t.Run(tn, func(t *testing.T) {
-			got := tt.recv.pluralize(tt.arg)
+			got := tt.recv.Pluralize(tt.arg)
 			assert.Equal(t, tt.want, got)
 		})
 	}

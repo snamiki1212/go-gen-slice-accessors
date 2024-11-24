@@ -12,12 +12,16 @@ import (
 
 type Parser struct {
 	reader     Reader
-	pluralizer Pluralizer
+	pluralizer IPluralizer
+}
+
+type IPluralizer interface {
+	Pluralize(str string) string
 }
 
 type Reader func(path string) (*ast.File, error)
 
-func NewParser(reader Reader, pluralizer Pluralizer) *Parser {
+func NewParser(reader Reader, pluralizer IPluralizer) *Parser {
 	return &Parser{reader: reader, pluralizer: pluralizer}
 }
 
@@ -315,18 +319,18 @@ func (f field) display() string {
 }
 
 // Build accessor name.
-func (f *field) buildAccessor(p Pluralizer, rule map[string]string) *field {
+func (f *field) buildAccessor(p IPluralizer, rule map[string]string) *field {
 	if ac, ok := rule[f.Name]; ok {
 		f.Accessor = ac
 		return f
 	}
 
-	f.Accessor = p.pluralize(f.Name)
+	f.Accessor = p.Pluralize(f.Name)
 	return f
 }
 
 // Build accessor names.
-func (fs fields) buildAccessor(p Pluralizer, rule map[string]string) fields {
+func (fs fields) buildAccessor(p IPluralizer, rule map[string]string) fields {
 	for i := range fs {
 		fs[i].buildAccessor(p, rule)
 	}
