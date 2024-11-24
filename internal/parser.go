@@ -10,13 +10,15 @@ import (
 	"strings"
 )
 
-type Reader func(path string) (*ast.File, error)
 type Parser struct {
-	reader Reader
+	reader     Reader
+	pluralizer Pluralizer
 }
 
-func NewParser(reader Reader) *Parser {
-	return &Parser{reader: reader}
+type Reader func(path string) (*ast.File, error)
+
+func NewParser(reader Reader, pluralizer Pluralizer) *Parser {
+	return &Parser{reader: reader, pluralizer: pluralizer}
 }
 
 // Parse
@@ -41,7 +43,7 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 	// Transform data
 	fs = fs.
 		excludeByFieldName(args.FieldNamesToExclude).
-		buildAccessor(newPluralizer(), args.Renames)
+		buildAccessor(p.pluralizer, args.Renames)
 
 	// Parse paths
 	paths := func() ImportPaths {
@@ -313,7 +315,7 @@ func (f field) display() string {
 }
 
 // Build accessor name.
-func (f *field) buildAccessor(p pluralizer, rule map[string]string) *field {
+func (f *field) buildAccessor(p Pluralizer, rule map[string]string) *field {
 	if ac, ok := rule[f.Name]; ok {
 		f.Accessor = ac
 		return f
@@ -324,7 +326,7 @@ func (f *field) buildAccessor(p pluralizer, rule map[string]string) *field {
 }
 
 // Build accessor names.
-func (fs fields) buildAccessor(p pluralizer, rule map[string]string) fields {
+func (fs fields) buildAccessor(p Pluralizer, rule map[string]string) fields {
 	for i := range fs {
 		fs[i].buildAccessor(p, rule)
 	}
