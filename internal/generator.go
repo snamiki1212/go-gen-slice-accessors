@@ -38,6 +38,23 @@ type templateMapper struct {
 	Field  string // Field name of struct (ex. UserID).
 }
 
+func NewTemplateMappers(slice string, fields fields) []*templateMapper {
+	var mappers []*templateMapper
+	for _, field := range fields {
+		mappers = append(mappers, NewTemplateMapper(slice, field.Accessor, field.Type, field.Name))
+	}
+	return mappers
+}
+
+func NewTemplateMapper(slice, method, typ, field string) *templateMapper {
+	return &templateMapper{
+		Slice:  slice,
+		Method: method,
+		Type:   typ,
+		Field:  field,
+	}
+}
+
 // Generate code
 func (g Generator) Generate() (string, error) {
 	if len(g.fields) == 0 {
@@ -53,26 +70,32 @@ func (g Generator) Generate() (string, error) {
 	txt += fmt.Sprintf("package %s\n", g.pkgName)
 	txt += g.importPaths.Display()
 
-	// append templates
-	var doc bytes.Buffer
+	// New template
 	tp, err := template.New("").Parse(templateBody)
 	if err != nil {
 		return "", fmt.Errorf("template parse error: %w", err)
 	}
-	for _, info := range g.fields {
-		data := &templateMapper{
-			Slice:  g.sliceName,
-			Method: info.Accessor,
-			Type:   info.Type,
-			Field:  info.Name,
-		}
 
-		err = tp.Execute(&doc, data)
-		if err != nil {
-			return "", fmt.Errorf("template execute error: %w", err)
+	// Create template mappers
+	mappers := NewTemplateMappers(g.sliceName, g.fields)
+
+	// Build template
+	templateStr, err := func() (string, error) {
+		var doc bytes.Buffer
+		for _, info := range mappers {
+			err = tp.Execute(&doc, info)
+			if err != nil {
+				return "", fmt.Errorf("template execute error: %w", err)
+			}
 		}
+		return doc.String(), nil
+	}()
+	if err != nil {
+		return "", err
 	}
-	txt += doc.String()
+
+	// Append template
+	txt += templateStr
 
 	// format (go fmt)
 	btxt, err := format.Source([]byte(txt))
