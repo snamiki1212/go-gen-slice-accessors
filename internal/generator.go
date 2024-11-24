@@ -70,31 +70,11 @@ func (g Generator) Generate() (string, error) {
 	txt += fmt.Sprintf("package %s\n", g.pkgName)
 	txt += g.importPaths.Display()
 
-	// New template
-	tp, err := template.New("").Parse(templateBody)
-	if err != nil {
-		return "", fmt.Errorf("template parse error: %w", err)
-	}
-
-	// Create template mappers
-	mappers := NewTemplateMappers(g.sliceName, g.fields)
-
-	// Build template
-	templateStr, err := func() (string, error) {
-		var doc bytes.Buffer
-		for _, info := range mappers {
-			err = tp.Execute(&doc, info)
-			if err != nil {
-				return "", fmt.Errorf("template execute error: %w", err)
-			}
-		}
-		return doc.String(), nil
-	}()
-	if err != nil {
-		return "", err
-	}
-
 	// Append template
+	templateStr, err := g.generateTemplate()
+	if err != nil {
+		return "", fmt.Errorf("generate template error: %w", err)
+	}
 	txt += templateStr
 
 	// format (go fmt)
@@ -106,4 +86,27 @@ func (g Generator) Generate() (string, error) {
 	txt = string(btxt)
 
 	return txt, nil
+}
+
+// Generate template
+func (g Generator) generateTemplate() (string, error) {
+	// New template
+	tp, err := template.New("").Parse(templateBody)
+	if err != nil {
+		return "", fmt.Errorf("template parse error: %w", err)
+	}
+
+	// Create template mappers
+	mappers := NewTemplateMappers(g.sliceName, g.fields)
+
+	// Build template
+	var doc bytes.Buffer
+	for _, info := range mappers {
+		err = tp.Execute(&doc, info)
+		if err != nil {
+			return "", fmt.Errorf("template execute error: %w", err)
+		}
+	}
+
+	return doc.String(), nil
 }
