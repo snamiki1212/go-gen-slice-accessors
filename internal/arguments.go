@@ -36,11 +36,13 @@ var Args = Arguments{
 	ImportPaths: make([]ImportPath, 0),
 }
 
-type ImportPath struct {
-	path  string
-	alias string
-}
-type ImportPaths []ImportPath
+type (
+	ImportPath struct {
+		Path  string
+		Alias string
+	}
+	ImportPaths []ImportPath
+)
 
 // Display import paths
 func (is ImportPaths) Display() string {
@@ -50,11 +52,11 @@ func (is ImportPaths) Display() string {
 
 	var txt string
 	for _, elem := range is {
-		switch elem.alias {
+		switch elem.Alias {
 		case "": // no alias
-			txt += fmt.Sprintf("	\"%s\"\n", elem.path)
+			txt += fmt.Sprintf("	\"%s\"\n", elem.Path)
 		default:
-			txt += fmt.Sprintf("	%s \"%s\"\n", elem.alias, elem.path)
+			txt += fmt.Sprintf("	%s \"%s\"\n", elem.Alias, elem.Path)
 		}
 	}
 	return "\nimport (\n" + txt + ")\n"
@@ -107,10 +109,10 @@ func (a *Arguments) loadImportPath(sli []string) error {
 		switch len(pair) {
 		case 1: // only path case
 			path := pair[0]
-			Args.ImportPaths = append(Args.ImportPaths, ImportPath{path: path})
+			Args.ImportPaths = append(Args.ImportPaths, ImportPath{Path: path})
 		case 2: // path:alias case
 			path, alias := pair[0], pair[1]
-			Args.ImportPaths = append(Args.ImportPaths, ImportPath{path: path, alias: alias})
+			Args.ImportPaths = append(Args.ImportPaths, ImportPath{Path: path, Alias: alias})
 		default:
 			errs = append(errs, fmt.Errorf("invalid import path: %s", str))
 		}

@@ -77,7 +77,7 @@ func newImportPathsFromFile(node *ast.File) ImportPaths {
 		if imp.Name != nil {
 			alias = imp.Name.Name
 		}
-		paths = append(paths, ImportPath{path: strings.Trim(imp.Path.Value, `"`), alias: alias})
+		paths = append(paths, ImportPath{Path: strings.Trim(imp.Path.Value, `"`), Alias: alias})
 	}
 	return paths
 }
@@ -94,9 +94,9 @@ func filterByUsed(candidates []ImportPath, fs Fields) []ImportPath {
 	var res []ImportPath
 	for _, tn := range ts {
 		for _, imp := range candidates {
-			switch imp.alias {
+			switch imp.Alias {
 			case "": // no alias
-				path := imp.path
+				path := imp.Path
 				// xxx/yyyy/zzz -> zzz
 				if strings.Contains(path, "/") {
 					path = path[strings.LastIndex(path, "/")+1:]
@@ -105,7 +105,7 @@ func filterByUsed(candidates []ImportPath, fs Fields) []ImportPath {
 					res = append(res, imp)
 				}
 			default: // has alias
-				if tn == imp.alias {
+				if tn == imp.Alias {
 					res = append(res, imp)
 				}
 			}
@@ -114,7 +114,7 @@ func filterByUsed(candidates []ImportPath, fs Fields) []ImportPath {
 
 	// Uniq
 	res = slices.CompactFunc(res, func(e1, e2 ImportPath) bool {
-		return e1.path == e2.path && e1.alias == e2.alias
+		return e1.Path == e2.Path && e1.Alias == e2.Alias
 	})
 
 	return res

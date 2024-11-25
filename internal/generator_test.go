@@ -27,7 +27,7 @@ func Test_generate(t *testing.T) {
 					PkgName:   "user",
 					SliceName: "Users",
 					ImportBlock: (ImportPaths{
-						{path: "time", alias: "alias_time"},
+						{Path: "time", Alias: "alias_time"},
 					}).Display(),
 				},
 			},

@@ -65,7 +65,7 @@ type User struct {
 					{Accessor: "UpdatedAt2s", Name: "UpdatedAt2", Type: "*time.Time"},
 				},
 				ImportBlock: (ImportPaths{
-					{path: "time", alias: ""},
+					{Path: "time", Alias: ""},
 				}).Display(),
 			},
 		},
