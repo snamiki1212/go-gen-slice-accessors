@@ -1,9 +1,11 @@
-package internal
+package generator
 
 import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"slices"
+	"strings"
 	"text/template"
 )
 
@@ -25,6 +27,33 @@ type (
 		Accessor string // accessor name like UserIDs
 	}
 )
+
+// Display fields.
+func (fs Fields) Display() string {
+	if len(fs) == 0 {
+		return ""
+	}
+	var pairs []string
+	for _, f := range fs {
+		pairs = append(pairs, f.Display())
+	}
+	return strings.Join(pairs, ", ")
+}
+
+// Display field.
+func (f Field) Display() string {
+	if f.Name == "" {
+		return f.Type
+	}
+	return fmt.Sprintf("%s %s", f.Name, f.Type)
+}
+
+// Exclude fields by name.
+func (fs Fields) ExcludeByFieldName(targets []string) Fields {
+	return slices.DeleteFunc(fs, func(f Field) bool {
+		return slices.Contains(targets, f.Name)
+	})
+}
 
 const templateBody = `
 // {{ .Method }}

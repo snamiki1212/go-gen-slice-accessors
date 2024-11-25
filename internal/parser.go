@@ -6,6 +6,8 @@ import (
 	"log"
 	"slices"
 	"strings"
+
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/generator"
 )
 
 type Parser struct {
@@ -28,26 +30,22 @@ func NewParser(reader IReader, pluralizer IPluralizer) *Parser {
 // Parse
 //
 // Parse sorce code and new generator.
-func (p Parser) Parse(args Arguments) (Generator, error) {
+func (p Parser) Parse(args Arguments) (generator.Generator, error) {
 	// Convert source code to ast
 	file, err := p.reader.Read()
 	if err != nil {
-		return Generator{}, fmt.Errorf("parse: error: %w", err)
+		return generator.Generator{}, fmt.Errorf("parse: error: %w", err)
 	}
 
 	// Parse ast
 	fields, err := parseFile(file, args)
 	if err != nil {
-		return Generator{}, err
+		return generator.Generator{}, err
 	}
 
-	// Convert ast to own struct
-	fs := newFields(fields)
-
-	// Transform data
-	fs = fs.
-		excludeByFieldName(args.FieldNamesToExclude).
-		buildAccessor(p.pluralizer, args.Renames)
+	// Convert ast to generator struct and transform data
+	fs := newFields(fields).ExcludeByFieldName(args.FieldNamesToExclude)
+	fs = buildAccessorMulti(fs, p.pluralizer, args.Renames)
 
 	// Parse paths
 	paths := func() ImportPaths {
@@ -58,7 +56,7 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 		return filterByUsed(paths, fs)
 	}()
 
-	return Generator{
+	return generator.Generator{
 		Fields:      fs,
 		PkgName:     getPackageNameFromFile(file),
 		SliceName:   args.Slice,
@@ -83,7 +81,7 @@ func newImportPathsFromFile(node *ast.File) ImportPaths {
 }
 
 // Filter import paths by using fields.
-func filterByUsed(candidates []ImportPath, fs Fields) []ImportPath {
+func filterByUsed(candidates []ImportPath, fs generator.Fields) []ImportPath {
 	ts := []string{} // Actucally Used type name from filed type ex) time.Time -> time
 	for _, f := range fs {
 		if strings.Contains(f.Type, ".") {
@@ -225,13 +223,13 @@ func parseStarExpr(x *ast.StarExpr) string {
 func parseFuncType(x *ast.FuncType) string {
 	params := func() string {
 		if x != nil && x.Params != nil && x.Params.List != nil {
-			return newFields(x.Params.List).display()
+			return newFields(x.Params.List).Display()
 		}
 		return ""
 	}()
 	results := func() string {
 		if x != nil && x.Results != nil && x.Results.List != nil {
-			return newFields(x.Results.List).display()
+			return newFields(x.Results.List).Display()
 		}
 		return ""
 	}()
@@ -251,8 +249,8 @@ func parseEllipsis(x *ast.Ellipsis) string {
 }
 
 // Constructor for fields.
-func newFields(raws []*ast.Field) Fields {
-	fs := make(Fields, 0, len(raws))
+func newFields(raws []*ast.Field) generator.Fields {
+	fs := make(generator.Fields, 0, len(raws))
 	for _, raw := range raws {
 		fs = append(fs, newField(raw))
 	}
@@ -272,37 +270,17 @@ func safeGetNameFromField(raw *ast.Field) string {
 // ----------------
 
 // Constructor for field.
-func newField(raw *ast.Field) Field {
+func newField(raw *ast.Field) generator.Field {
 	name := safeGetNameFromField(raw)
 	ty := parseExpr(raw.Type)
-	return Field{
+	return generator.Field{
 		Name: name,
 		Type: ty,
 	}
 }
 
-// Display fields.
-func (fs Fields) display() string {
-	if len(fs) == 0 {
-		return ""
-	}
-	var pairs []string
-	for _, f := range fs {
-		pairs = append(pairs, f.display())
-	}
-	return strings.Join(pairs, ", ")
-}
-
-// Display field.
-func (f Field) display() string {
-	if f.Name == "" {
-		return f.Type
-	}
-	return fmt.Sprintf("%s %s", f.Name, f.Type)
-}
-
 // Build accessor name.
-func (f *Field) buildAccessor(p IPluralizer, rule map[string]string) *Field {
+func buildAccessor(f *generator.Field, p IPluralizer, rule map[string]string) *generator.Field {
 	if ac, ok := rule[f.Name]; ok {
 		f.Accessor = ac
 		return f
@@ -313,16 +291,9 @@ func (f *Field) buildAccessor(p IPluralizer, rule map[string]string) *Field {
 }
 
 // Build accessor names.
-func (fs Fields) buildAccessor(p IPluralizer, rule map[string]string) Fields {
+func buildAccessorMulti(fs generator.Fields, p IPluralizer, rule map[string]string) generator.Fields {
 	for i := range fs {
-		fs[i].buildAccessor(p, rule)
+		buildAccessor(&fs[i], p, rule)
 	}
 	return fs
-}
-
-// Exclude fields by name.
-func (fs Fields) excludeByFieldName(targets []string) Fields {
-	return slices.DeleteFunc(fs, func(f Field) bool {
-		return slices.Contains(targets, f.Name)
-	})
 }
