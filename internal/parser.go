@@ -62,7 +62,7 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 		fields:      fs,
 		pkgName:     getPackageNameFromFile(file),
 		sliceName:   args.Slice,
-		importPaths: paths,
+		importBlock: paths.Display(),
 	}, nil
 }
 

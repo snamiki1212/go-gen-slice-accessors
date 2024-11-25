@@ -12,7 +12,7 @@ type Generator struct {
 	fields      fields
 	pkgName     string
 	sliceName   string
-	importPaths ImportPaths
+	importBlock string
 }
 
 const templateBody = `
@@ -51,7 +51,7 @@ func (g Generator) Generate() (string, error) {
 	txt += "// Based on information from https://github.com/snamiki1212/go-gen-slice-accessors\n"
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
-	txt += g.importPaths.Display()
+	txt += g.importBlock
 
 	// append templates
 	var doc bytes.Buffer
