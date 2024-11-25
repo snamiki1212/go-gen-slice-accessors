@@ -1,18 +1,58 @@
-package internal
+package generator
 
 import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"slices"
+	"strings"
 	"text/template"
 )
 
 // Generator: code generation struct
 type Generator struct {
-	fields      fields
-	pkgName     string
-	sliceName   string
-	importPaths ImportPaths
+	Fields      Fields
+	PkgName     string
+	SliceName   string
+	ImportBlock string
+}
+
+type (
+	Fields []Field
+
+	// Struct Field from entity in source code.
+	Field struct {
+		Name     string // field name like UserID
+		Type     string // field type like string,int64...
+		Accessor string // accessor name like UserIDs
+	}
+)
+
+// Display fields.
+func (fs Fields) Display() string {
+	if len(fs) == 0 {
+		return ""
+	}
+	var pairs []string
+	for _, f := range fs {
+		pairs = append(pairs, f.Display())
+	}
+	return strings.Join(pairs, ", ")
+}
+
+// Display field.
+func (f Field) Display() string {
+	if f.Name == "" {
+		return f.Type
+	}
+	return fmt.Sprintf("%s %s", f.Name, f.Type)
+}
+
+// Exclude fields by name.
+func (fs Fields) ExcludeByFieldName(targets []string) Fields {
+	return slices.DeleteFunc(fs, func(f Field) bool {
+		return slices.Contains(targets, f.Name)
+	})
 }
 
 const templateBody = `
@@ -36,9 +76,9 @@ type templateMapper struct {
 
 // Generate code
 func (g Generator) Generate() (string, error) {
-	pkgName := g.pkgName
-	sliceName := g.sliceName
-	infos := g.fields
+	pkgName := g.PkgName
+	sliceName := g.SliceName
+	infos := g.Fields
 
 	if len(infos) == 0 {
 		return "", nil
@@ -51,7 +91,7 @@ func (g Generator) Generate() (string, error) {
 	txt += "// Based on information from https://github.com/snamiki1212/go-gen-slice-accessors\n"
 	txt += "\n"
 	txt += fmt.Sprintf("package %s\n", pkgName)
-	txt += g.importPaths.Display()
+	txt += g.ImportBlock
 
 	// append templates
 	var doc bytes.Buffer
