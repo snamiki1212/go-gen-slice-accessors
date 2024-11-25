@@ -27,6 +27,7 @@ import (
 	"os"
 
 	"github.com/snamiki1212/go-gen-slice-accessors/internal"
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/writer"
 	"github.com/spf13/cobra"
 )
 
@@ -55,7 +56,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Write to output file
-		err = internal.Write(internal.Args.Output, txt)
+		err = writer.Write(internal.Args.Output, txt)
 		if err != nil {
 			return fmt.Errorf("write error: %w", err)
 		}
