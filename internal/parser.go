@@ -83,7 +83,7 @@ func newImportPathsFromFile(node *ast.File) ImportPaths {
 }
 
 // Filter import paths by using fields.
-func filterByUsed(candidates []ImportPath, fs fields) []ImportPath {
+func filterByUsed(candidates []ImportPath, fs Fields) []ImportPath {
 	ts := []string{} // Actucally Used type name from filed type ex) time.Time -> time
 	for _, f := range fs {
 		if strings.Contains(f.Type, ".") {
@@ -143,17 +143,6 @@ func parseFile(node *ast.File, args Arguments) ([]*ast.Field, error) {
 
 	return fs, nil
 }
-
-type (
-	fields []field
-
-	// Struct field from entity in source code.
-	field struct {
-		Name     string // field name like UserID
-		Type     string // field type like string,int64...
-		Accessor string // accessor name like UserIDs
-	}
-)
 
 // Parse expression.
 func parseExpr(x ast.Expr) string {
@@ -262,8 +251,8 @@ func parseEllipsis(x *ast.Ellipsis) string {
 }
 
 // Constructor for fields.
-func newFields(raws []*ast.Field) fields {
-	fs := make(fields, 0, len(raws))
+func newFields(raws []*ast.Field) Fields {
+	fs := make(Fields, 0, len(raws))
 	for _, raw := range raws {
 		fs = append(fs, newField(raw))
 	}
@@ -283,17 +272,17 @@ func safeGetNameFromField(raw *ast.Field) string {
 // ----------------
 
 // Constructor for field.
-func newField(raw *ast.Field) field {
+func newField(raw *ast.Field) Field {
 	name := safeGetNameFromField(raw)
 	ty := parseExpr(raw.Type)
-	return field{
+	return Field{
 		Name: name,
 		Type: ty,
 	}
 }
 
 // Display fields.
-func (fs fields) display() string {
+func (fs Fields) display() string {
 	if len(fs) == 0 {
 		return ""
 	}
@@ -305,7 +294,7 @@ func (fs fields) display() string {
 }
 
 // Display field.
-func (f field) display() string {
+func (f Field) display() string {
 	if f.Name == "" {
 		return f.Type
 	}
@@ -313,7 +302,7 @@ func (f field) display() string {
 }
 
 // Build accessor name.
-func (f *field) buildAccessor(p IPluralizer, rule map[string]string) *field {
+func (f *Field) buildAccessor(p IPluralizer, rule map[string]string) *Field {
 	if ac, ok := rule[f.Name]; ok {
 		f.Accessor = ac
 		return f
@@ -324,7 +313,7 @@ func (f *field) buildAccessor(p IPluralizer, rule map[string]string) *field {
 }
 
 // Build accessor names.
-func (fs fields) buildAccessor(p IPluralizer, rule map[string]string) fields {
+func (fs Fields) buildAccessor(p IPluralizer, rule map[string]string) Fields {
 	for i := range fs {
 		fs[i].buildAccessor(p, rule)
 	}
@@ -332,8 +321,8 @@ func (fs fields) buildAccessor(p IPluralizer, rule map[string]string) fields {
 }
 
 // Exclude fields by name.
-func (fs fields) excludeByFieldName(targets []string) fields {
-	return slices.DeleteFunc(fs, func(f field) bool {
+func (fs Fields) excludeByFieldName(targets []string) Fields {
+	return slices.DeleteFunc(fs, func(f Field) bool {
 		return slices.Contains(targets, f.Name)
 	})
 }

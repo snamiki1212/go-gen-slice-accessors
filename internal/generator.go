@@ -9,11 +9,22 @@ import (
 
 // Generator: code generation struct
 type Generator struct {
-	Fields      fields
+	Fields      Fields
 	PkgName     string
 	SliceName   string
 	ImportBlock string
 }
+
+type (
+	Fields []Field
+
+	// Struct Field from entity in source code.
+	Field struct {
+		Name     string // field name like UserID
+		Type     string // field type like string,int64...
+		Accessor string // accessor name like UserIDs
+	}
+)
 
 const templateBody = `
 // {{ .Method }}

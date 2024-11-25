@@ -20,7 +20,7 @@ func Test_generate(t *testing.T) {
 			name: "ok",
 			args: args{
 				generator: Generator{
-					Fields: fields{
+					Fields: Fields{
 						{Accessor: "Names", Name: "Name", Type: "string"},
 						{Accessor: "Ages", Name: "Age", Type: "int64"},
 					},
@@ -63,7 +63,7 @@ func (xs Users) Ages() []int64 {
 			name: "ok: empty",
 			args: args{
 				generator: Generator{
-					Fields:    fields{},
+					Fields:    Fields{},
 					PkgName:   "user",
 					SliceName: "Users",
 				},

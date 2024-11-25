@@ -35,7 +35,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
 					{Accessor: "Ages", Name: "Age", Type: "int64"},
 				},
@@ -59,7 +59,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "CreatedAts", Name: "CreatedAt", Type: "time.Time"},
 					{Accessor: "UpdatedAts", Name: "UpdatedAt", Type: "*time.Time"},
 					{Accessor: "UpdatedAt2s", Name: "UpdatedAt2", Type: "*time.Time"},
@@ -84,7 +84,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
 				},
 			},
@@ -105,7 +105,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
 					{Accessor: "AgeList", Name: "Age", Type: "int64"},
 				},
@@ -127,7 +127,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "UserIDs", Name: "UserID", Type: "string"},
 					{Accessor: "Histories", Name: "History", Type: "bool"},
 					{Accessor: "Boxes", Name: "Box", Type: "bool"},
@@ -154,7 +154,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "callback0s", Name: "callback0", Type: "func() ()"},
 					{Accessor: "callback1s", Name: "callback1", Type: "func(x string, x2 bool) (y int64, y2 int32)"},
 					{Accessor: "callback2s", Name: "callback2", Type: "func(string, bool) (int64, int32)"},
@@ -182,7 +182,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "map0s", Name: "map0", Type: "map[string]string"},
 					{Accessor: "map1s", Name: "map1", Type: "map[string]func() ()"},
 					{Accessor: "mapAs", Name: "mapA", Type: "*map[string]string"},
@@ -204,7 +204,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "SliceInts", Name: "SliceInt", Type: "[]int"},
 				},
 			},
@@ -228,7 +228,7 @@ type User struct {
 			want: Generator{
 				PkgName:   "user",
 				SliceName: "Users",
-				Fields: fields{
+				Fields: Fields{
 					{Accessor: "chan0s", Name: "chan0", Type: "chan string"},
 					{Accessor: "chan1s", Name: "chan1", Type: "chan func() ()"},
 					{Accessor: "chanAs", Name: "chanA", Type: "*chan string"},
