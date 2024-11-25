@@ -27,6 +27,9 @@ import (
 	"os"
 
 	"github.com/snamiki1212/go-gen-slice-accessors/internal"
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/pluralizer"
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/reader"
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/writer"
 	"github.com/spf13/cobra"
 )
 
@@ -42,7 +45,7 @@ var rootCmd = &cobra.Command{
 
 		// Parse source code
 		generator, err := internal.
-			NewParser(internal.NewReader(internal.Args.Input), internal.NewPluralizer()).
+			NewParser(reader.NewReader(internal.Args.Input), pluralizer.NewPluralizer()).
 			Parse(internal.Args)
 		if err != nil {
 			return fmt.Errorf("parse error: %w", err)
@@ -55,7 +58,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		// Write to output file
-		err = internal.Write(internal.Args.Output, txt)
+		err = writer.Write(internal.Args.Output, txt)
 		if err != nil {
 			return fmt.Errorf("write error: %w", err)
 		}
