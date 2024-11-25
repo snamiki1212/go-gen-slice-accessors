@@ -20,13 +20,13 @@ func Test_generate(t *testing.T) {
 			name: "ok",
 			args: args{
 				generator: Generator{
-					fields: fields{
+					Fields: fields{
 						{Accessor: "Names", Name: "Name", Type: "string"},
 						{Accessor: "Ages", Name: "Age", Type: "int64"},
 					},
-					pkgName:   "user",
-					sliceName: "Users",
-					importBlock: (ImportPaths{
+					PkgName:   "user",
+					SliceName: "Users",
+					ImportBlock: (ImportPaths{
 						{path: "time", alias: "alias_time"},
 					}).Display(),
 				},
@@ -63,9 +63,9 @@ func (xs Users) Ages() []int64 {
 			name: "ok: empty",
 			args: args{
 				generator: Generator{
-					fields:    fields{},
-					pkgName:   "user",
-					sliceName: "Users",
+					Fields:    fields{},
+					PkgName:   "user",
+					SliceName: "Users",
 				},
 			},
 			want: ``,

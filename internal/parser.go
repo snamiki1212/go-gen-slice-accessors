@@ -59,10 +59,10 @@ func (p Parser) Parse(args Arguments) (Generator, error) {
 	}()
 
 	return Generator{
-		fields:      fs,
-		pkgName:     getPackageNameFromFile(file),
-		sliceName:   args.Slice,
-		importBlock: paths.Display(),
+		Fields:      fs,
+		PkgName:     getPackageNameFromFile(file),
+		SliceName:   args.Slice,
+		ImportBlock: paths.Display(),
 	}, nil
 }
 
