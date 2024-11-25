@@ -6,6 +6,7 @@ import (
 	"go/token"
 	"testing"
 
+	"github.com/snamiki1212/go-gen-slice-accessors/internal/pluralizer"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -279,7 +280,7 @@ type User struct {
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			reader := NewReaderFromString(tt.args.src)
-			parser := NewParser(reader, NewPluralizer())
+			parser := NewParser(reader, pluralizer.NewPluralizer())
 			got, err := parser.Parse(tt.args.arguments)
 			if tt.wantErr {
 				assert.Error(t, err)
