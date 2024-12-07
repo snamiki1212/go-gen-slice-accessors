@@ -281,12 +281,12 @@ func newField(raw *ast.Field) generator.Field {
 
 // Build accessor name.
 func buildAccessor(f *generator.Field, p IPluralizer, rule map[string]string) *generator.Field {
-	if ac, ok := rule[f.Name]; ok {
+	if ac, ok := rule[f.Name]; ok { // use name from rule if exists
 		f.Accessor = ac
 		return f
 	}
 
-	f.Accessor = p.Pluralize(f.Name)
+	f.Accessor = p.Pluralize(f.Name) // build name by pluralizer
 	return f
 }
 
