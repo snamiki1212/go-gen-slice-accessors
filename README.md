@@ -79,7 +79,7 @@ func main() {
 ## Help
 
 ```shell
-Generate accessors for each field in the slice struct.
+Generate accessor methods for slice.
 
 Usage:
   gen-slice-accessors [flags]
