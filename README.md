@@ -1,8 +1,8 @@
 # go-gen-slice-accessors
 
-Generate accessor methods for slice.
-
 <img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
+
+Generate accessor methods for slice.
 
 - <b>Easy Setup & Removal</b>
 - <b>Code Generation & Zero Package Size</b>
