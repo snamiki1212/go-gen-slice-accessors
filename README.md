@@ -1,11 +1,11 @@
 # go-gen-slice-accessors
 
-Generate accessors for each field in the slice struct.
+Generate accessor methods for slice.
+
+<img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
 
 - <b>Easy Setup & Removal</b>
 - <b>Code Generation & Zero Package Size</b>
-
-<img src="https://github.com/user-attachments/assets/92602519-44ab-49ad-9093-46fe3858eed3" />
 
 ## Usage
 
@@ -17,7 +17,7 @@ $ go-gen-slice-accessors --help
 # -> To ensure it was installed correctly, otherwise set up your GOPATH like `export PATH=$PATH:$(go env GOPATH)/bin`
 ```
 
-### 2. Add `go:generate` directive.
+### 2. Add `go:generate` directive
 
 ```diff filename="user.go"
 // user.go
@@ -31,7 +31,7 @@ type User struct {
 type Users []User
 ```
 
-### 3. Run `go generate` command.
+### 3. Run `go generate` command
 
 ```shell
 $ go generate user.go
@@ -52,7 +52,7 @@ $ go generate user.go
 +}
 ```
 
-### 4. Enjoy programming.
+### 4. Enjoy programming
 
 ```go
 package main
@@ -79,15 +79,15 @@ func main() {
 ## Help
 
 ```shell
-Generate accessors for each field in the slice struct.
+Generate accessor methods for slice.
 
 Usage:
-  gen-slice-accessors [flags]
+  go-gen-slice-accessors [flags]
 
 Flags:
   -e, --entity string     [required] Target entity name
   -x, --exclude strings   Field names to exclude
-  -h, --help              help for gen-slice-accessors
+  -h, --help              help for go-gen-slice-accessors
   -m, --import strings    Import path name
                            e.g. --import=time
                            e.g. --import=time:aliasTime
@@ -117,7 +117,7 @@ $ go run ./example
 
 ## Alternatives
 
-Please refer to the following if you like this package and generating more.
+Please refer to the following package if you would like to generate more.
 
 - [go-gen-lo](https://github.com/snamiki1212/go-gen-lo): Generate samber/lo method for your struct.
 
