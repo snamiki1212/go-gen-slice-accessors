@@ -8,6 +8,8 @@ on:
     paths:
       - "**/*.go"
       - "**/go.*"
+    branches:
+      - main
   pull_request:
     paths:
       - "**/*.go"
