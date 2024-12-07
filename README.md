@@ -82,12 +82,12 @@ func main() {
 Generate accessor methods for slice.
 
 Usage:
-  gen-slice-accessors [flags]
+  go-gen-slice-accessors [flags]
 
 Flags:
   -e, --entity string     [required] Target entity name
   -x, --exclude strings   Field names to exclude
-  -h, --help              help for gen-slice-accessors
+  -h, --help              help for go-gen-slice-accessors
   -m, --import strings    Import path name
                            e.g. --import=time
                            e.g. --import=time:aliasTime

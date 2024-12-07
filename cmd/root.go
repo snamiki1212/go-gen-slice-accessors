@@ -35,7 +35,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "gen-slice-accessors",
+	Use:   "go-gen-slice-accessors",
 	Short: "Generate accessor methods for slice.",
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		// Load arguments
